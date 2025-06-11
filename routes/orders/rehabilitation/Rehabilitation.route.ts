@@ -19,7 +19,7 @@ router
 // ~ Put => /api/captal/orderQualification/status/:id ~ Update Qualification
 router
   .route("/status/:id")
-  .put(
+  .patch(
     verifyToken,
     checkRole(["admin"]),
     RehabilitationController.updateStatusQualification

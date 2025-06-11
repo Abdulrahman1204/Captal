@@ -19,7 +19,7 @@ router
 // ~ Put => /api/captal/orderMaterial/status/:id ~ Update Status Of Material Order
 router
   .route("/status/:id")
-  .put(
+  .patch(
     verifyToken,
     checkRole(["admin"]),
     MaterialOrderController.updateStatusMaterialCtrl

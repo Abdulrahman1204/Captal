@@ -21,7 +21,6 @@ const MaterialSchema = new Schema(
       type: String,
       required: [true, "رقم الهاتف مطلوب"],
       trim: true,
-      unique: true,
       validate: {
         validator: (v) => /^[0-9]{10}$/.test(v),
         message: (props) =>
@@ -103,7 +102,7 @@ const MaterialOrder: Model<IMaterial> = mongoose.model<IMaterial>(
 );
 
 // Material Order Indexes
-MaterialSchema.index({ createdAt: -1 })
+MaterialSchema.index({ createdAt: -1 });
 
 // Validation Create Material
 const validationCreateMaterialOrder = (
@@ -129,6 +128,13 @@ const validationCreateMaterialOrder = (
         "string.pattern.base": "رقم الهاتف يجب أن يتكون من 10 أرقام فقط",
         "any.required": "رقم الهاتف مطلوب",
       }),
+    email: joi.string().trim().email().allow(""),
+    companyName: joi.string().trim().allow(""),
+    dateOfCompany: joi.string().trim().allow(""),
+    materials: joi.array().items(joi.string().trim()),
+    projectName: joi.string().trim().allow(""),
+    noteForQuantity: joi.string().trim().allow(""),
+    description: joi.string().trim().allow(""),
   });
 
   return schema.validate(obj);

@@ -21,7 +21,6 @@ const FinanceSchema = new Schema(
       type: String,
       required: [true, "رقم الهاتف مطلوب"],
       trim: true,
-      unique: true,
       validate: {
         validator: (v) => /^[0-9]{10}$/.test(v),
         message: (props) =>
@@ -101,7 +100,7 @@ const Finance: Model<IFinance> = mongoose.model<IFinance>(
 );
 
 // Finance Indexes
-FinanceSchema.index({ createdAt: -1 })
+FinanceSchema.index({ createdAt: -1 });
 
 // Validation Create Finance
 const validaionCreateFinance = (obj: IFinance): joi.ValidationResult => {
@@ -125,6 +124,13 @@ const validaionCreateFinance = (obj: IFinance): joi.ValidationResult => {
         "string.pattern.base": "رقم الهاتف يجب أن يتكون من 10 أرقام فقط",
         "any.required": "رقم الهاتف مطلوب",
       }),
+    email: joi.string().email().allow(""),
+    companyName: joi.string().trim().allow(""),
+    dateOfCompany: joi.string().allow(""),
+    projectName: joi.string().trim().allow(""),
+    lastYearRevenue: joi.string().allow(""),
+    requiredAmount: joi.string().allow(""),
+    description: joi.string().optional().allow(""),
   });
 
   return schema.validate(obj);

@@ -23,7 +23,10 @@ class RecourseOrderController {
     async (req: Request, res: Response): Promise<void> => {
       const recourses = await RecourseOrderService.getRecourse();
 
-      res.status(200).json(recourses);
+      res.status(200).json({
+        count: recourses.length,
+        data: recourses
+      });
     }
   );
 

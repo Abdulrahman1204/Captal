@@ -101,6 +101,20 @@ const RecourseSchema = new Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret.id;
+        return ret;
+      },
+    },
+    toObject: {
+      virtuals: true,
+      transform: (doc, ret) => {
+        delete ret.id;
+        return ret;
+      },
+    },
   }
 );
 
@@ -144,25 +158,33 @@ const validationCreateRecourseOrder = (
   obj: IRecourse
 ): joi.ValidationResult => {
   const schema = joi.object({
-    firstName: joi.string().trim().required().max(100).messages({
-      "string.empty": "الاسم لا يمكن أن يكون فارغ",
-      "string.max": "الاسم يجب ألا يتجاوز 100 حرف",
-      "any.required": "الاسم مطلوب",
+    userId: joi.string(),
+    recourseName: joi.string().required(),
+    recoursePhone: joi.string().required(),
+    clientName: joi.string().required(),
+    clientPhone: joi.string().required(),
+    serialNumber: joi.number().required(),
+    projectName: joi.string().required(),
+    dateOfproject: joi.date(),
+    attachedFile: joi.object({
+      publicId: joi.string(),
+      url: joi.string(),
     }),
-    lastName: joi.string().trim().required().messages({
-      "string.empty": "الاسم العائلة لا يمكن أن يكون فارغ",
-      "string.max": "الاسم العائلة يجب ألا يتجاوز 100 حرف",
-      "any.required": "الاسم العائلة مطلوب",
-    }),
-    phone: joi
-      .string()
-      .pattern(/^[0-9]{10}$/)
-      .required()
-      .messages({
-        "string.empty": "رقم الهاتف لا يمكن أن يكون فارغاً",
-        "string.pattern.base": "رقم الهاتف يجب أن يتكون من 10 أرقام فقط",
-        "any.required": "رقم الهاتف مطلوب",
-      }),
+    materials: joi
+      .array()
+      .items(joi.string().pattern(/^[0-9a-fA-F]{24}$/))
+      .optional(),
+    paymentCheck: joi.string().valid("cash", "delayed"),
+    advance: joi.string().required(),
+    uponDelivry: joi.string().required(),
+    afterDelivry: joi.string().required(),
+    countryName: joi.string().required(),
+    location: joi
+      .object({
+        type: joi.string().valid("Point").default("Point"),
+        coordinates: joi.array().items(joi.number()).length(2).required(),
+      })
+      .optional(),
   });
 
   return schema.validate(obj);

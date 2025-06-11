@@ -5,18 +5,18 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import connectDB from "./configs/connectToDb";
 import { errorHandler, notFound } from "./middlewares/error";
-import compression from 'compression'
+import compression from "compression";
 
 // routes import
-import routeAuth from './routes/users/Auth.route'
-import routeUser from './routes/users/User.route'
-import routeClassFather from './routes/classifications/father/ClassFather.route'
-import routeClassSon from './routes/classifications/son/ClassSon.route'
-import routeMaterial from './routes/materials/material.route'
-import routeFinanceOrder from './routes/orders/finance/Finance.route'
-import routeMaterialOrder from './routes/orders/material/Material.route'
-import routeRehabilitationOrder from './routes/orders/rehabilitation/Rehabilitation.route'
-import routeRecourseOrder from './routes/orders/recourse/Recourse.route'
+import routeAuth from "./routes/users/Auth.route";
+import routeUser from "./routes/users/User.route";
+import routeClassFather from "./routes/classifications/father/ClassFather.route";
+import routeClassSon from "./routes/classifications/son/ClassSon.route";
+import routeMaterial from "./routes/materials/material.route";
+import routeFinanceOrder from "./routes/orders/finance/Finance.route";
+import routeMaterialOrder from "./routes/orders/material/Material.route";
+import routeRehabilitationOrder from "./routes/orders/rehabilitation/Rehabilitation.route";
+import routeRecourseOrder from "./routes/orders/recourse/Recourse.route";
 
 // .env
 dotenv.config();
@@ -42,12 +42,13 @@ app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 
-// Cors Policy
+//Cors Policy
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: ["http://localhost:5173", "https://captalsa.com"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicit methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Explicit headers
   })
 );
 
@@ -62,15 +63,15 @@ app.get("/health", (req: Request, res: Response) => {
     uptime: process.uptime(),
   });
 });
-app.use('/api/captal/auth', routeAuth)
-app.use('/api/captal/user', routeUser)
-app.use('/api/captal/classficationMaterial', routeClassFather)
-app.use('/api/captal/classficationMaterialSon', routeClassSon)
-app.use('/api/captal/material', routeMaterial)
-app.use('/api/captal/orderFinance', routeFinanceOrder)
-app.use('/api/captal/orderMaterial', routeMaterialOrder)
-app.use('/api/captal/orderQualification', routeRehabilitationOrder)
-app.use('/api/captal/recourseUserOrder', routeRecourseOrder)
+app.use("/api/captal/auth", routeAuth);
+app.use("/api/captal/user", routeUser);
+app.use("/api/captal/classficationMaterial", routeClassFather);
+app.use("/api/captal/classficationMaterialSon", routeClassSon);
+app.use("/api/captal/material", routeMaterial);
+app.use("/api/captal/orderFinance", routeFinanceOrder);
+app.use("/api/captal/orderMaterial", routeMaterialOrder);
+app.use("/api/captal/orderQualification", routeRehabilitationOrder);
+app.use("/api/captal/recourseUserOrder", routeRecourseOrder);
 
 // Error Handler Middleware
 app.use(notFound);

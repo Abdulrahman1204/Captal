@@ -21,7 +21,6 @@ const QualificationSchema = new Schema(
       type: String,
       required: [true, "رقم الهاتف مطلوب"],
       trim: true,
-      unique: true,
       validate: {
         validator: (v) => /^[0-9]{10}$/.test(v),
         message: (props) =>
@@ -119,6 +118,12 @@ const validaionCreateQualification = (
         "string.pattern.base": "رقم الهاتف يجب أن يتكون من 10 أرقام فقط",
         "any.required": "رقم الهاتف مطلوب",
       }),
+    email: joi.string().email().allow(""),
+    companyName: joi.string().trim().allow(""),
+    dateOfCompany: joi.date().allow(""),
+    lastYearRevenue: joi.string().allow(""),
+    requiredAmount: joi.string().allow(""),
+    description: joi.string().optional(),
   });
 
   return schema.validate(obj);
@@ -134,10 +139,10 @@ const validaionUpdateStatusQualification = (
       .trim()
       .valid(
         "accepted",
+        "not accepted",
         "an invoice has been issued",
         "shipped",
         "delivered",
-        "pending",
         "pending"
       )
       .required()
@@ -152,4 +157,8 @@ const validaionUpdateStatusQualification = (
   return schema.validate(obj);
 };
 
-export { Qualification, validaionCreateQualification, validaionUpdateStatusQualification };
+export {
+  Qualification,
+  validaionCreateQualification,
+  validaionUpdateStatusQualification,
+};

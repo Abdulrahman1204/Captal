@@ -22,8 +22,19 @@ class RecourseOrderService {
       throw new BadRequestError(error.details[0].message);
     }
 
+    const advance = parseFloat(recourseData.advance.replace("%", "")) || 0;
+    const uponDelivry = parseFloat(recourseData.uponDelivry.replace("%", "")) || 0;
+    const afterDelivry =
+      parseFloat(recourseData.afterDelivry.replace("%", "")) || 0;
+
+    const total = advance + uponDelivry + afterDelivry;
+
+    if (total !== 100) {
+      throw new BadRequestError("مجموع الدفعات يجب أن يكون 100%");
+    }
+
     const existingUser = await User.findOne({
-      phone: recourseData.recoursePhone,
+      phone: recourseData.recoursePhone, role: 'recourse'
     });
 
     if (!existingUser) {

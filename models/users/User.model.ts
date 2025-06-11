@@ -21,7 +21,6 @@ const UserSchema = new Schema(
       type: String,
       required: [true, "رقم الهاتف مطلوب"],
       trim: true,
-      unique: true,
       validate: {
         validator: (v) => /^[0-9]{10}$/.test(v),
         message: (props) =>
@@ -34,7 +33,6 @@ const UserSchema = new Schema(
       trim: true,
       minlength: [3, "البريد الإلكتروني يجب أن يكون على الأقل حرفين"],
       maxlength: [100, "البريد الإلكتروني يجب ألا يتجاوز 100 حرف"],
-      unique: true,
     },
     companyName: {
       type: String,

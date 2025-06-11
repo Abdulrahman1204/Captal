@@ -38,6 +38,13 @@ ClassFatherSchema.virtual("sonNames", {
   localField: "_id",
 });
 
+// Show Materials
+ClassFatherSchema.virtual("materialss", {
+  ref: "Matrials",  // يجب أن يتطابق مع اسم المودل
+  foreignField: "classification",
+  localField: "_id",
+});
+
 // Classification Father Indexes
 ClassFatherSchema.index({ createdAt: -1 });
 
