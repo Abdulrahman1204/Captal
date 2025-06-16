@@ -47,7 +47,7 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "https://captalsa.com"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicit methods
+    methods: ["GET", "POST", "PUT", 'PATCH', "DELETE", "OPTIONS"], // Explicit methods
     allowedHeaders: ["Content-Type", "Authorization"], // Explicit headers
   })
 );

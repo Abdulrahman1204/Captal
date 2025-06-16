@@ -26,6 +26,13 @@ class MaterialService {
       throw new BadRequestError("المادة موجودة مسبقاً");
     }
 
+    const existingserialNumberl = await Material.findOne({
+      serialNumber: materialData.serialNumber,
+    });
+    if (existingserialNumberl) {
+      throw new BadRequestError("الرقم التسلسلي موجود مسبقاً");
+    }
+
     const existingClassification = await ClassFather.findById(
       materialData.classification
     );

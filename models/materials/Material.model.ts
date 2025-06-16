@@ -14,7 +14,6 @@ const MaterialSchema = new Schema(
     serialNumber: {
       type: String,
       required: [true, "الرقم التسلسلي مطلوب"],
-      unique: true,
       trim: true,
       maxlength: [100, "الرقم التسلسلي يجب ألا يتجاوز 100 حرف"],
     },

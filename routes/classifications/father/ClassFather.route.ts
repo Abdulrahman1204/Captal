@@ -14,6 +14,8 @@ router
     ClassFatherController.createNewClassFatherCtrl
   )
   .get(
+    verifyToken,
+    checkRole(["admin"]),
     ClassFatherController.getClassFatherCtrl
   );
 

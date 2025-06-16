@@ -23,8 +23,8 @@ router
 
 // ~ Put => /api/captal/recourseUserOrder/status/:id ~ Update Order Recourse
 router
-  .route("/status/:id")
-  .put(
+  .route("/:id/status")
+  .patch(
     verifyToken,
     checkRole(["recourse"]),
     RecourseController.updateStatusRecourseCtrl
