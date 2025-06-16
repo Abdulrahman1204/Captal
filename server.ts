@@ -7,6 +7,16 @@ import connectDB from "./configs/connectToDb";
 import { errorHandler, notFound } from "./middlewares/error";
 import compression from "compression";
 
+// https
+import https from "https";
+import fs from "fs";
+
+// SSL Certificates
+const sslOptions = {
+  key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
+};
+
 // routes import
 import routeAuth from "./routes/users/Auth.route";
 import routeUser from "./routes/users/User.route";
@@ -47,8 +57,8 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "https://captalsa.com"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", 'PATCH', "DELETE", "OPTIONS"], // Explicit methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Explicit headers
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -79,4 +89,6 @@ app.use(errorHandler);
 
 //Running The Server
 const PORT: number = parseInt(process.env.PORT || "8000");
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+https
+  .createServer(sslOptions, app)
+  .listen(PORT, () => console.log(`Server is running on port ${PORT}`));
