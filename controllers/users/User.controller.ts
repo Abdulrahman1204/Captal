@@ -38,8 +38,10 @@ class UserController {
   // ~ Get => /api/captal/user ~ GET User
   getUsersCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const users = await UserService.getUsers();
-
+      const { role } = req.query;
+      
+      const users = await UserService.getUsers(role as string | undefined);
+  
       res.status(200).json(users);
     }
   );

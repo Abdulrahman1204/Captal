@@ -12,10 +12,10 @@ import https from "https";
 import fs from "fs";
 
 // SSL Certificates
-const sslOptions = {
-  key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
-};
+// const sslOptions = {
+//   key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
+//   cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
+// };
 
 // routes import
 import routeAuth from "./routes/users/Auth.route";
@@ -89,6 +89,5 @@ app.use(errorHandler);
 
 //Running The Server
 const PORT: number = parseInt(process.env.PORT || "8000");
-https
-  .createServer(sslOptions, app)
-  .listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

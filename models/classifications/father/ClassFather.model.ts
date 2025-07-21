@@ -40,7 +40,7 @@ ClassFatherSchema.virtual("sonNames", {
 
 // Show Materials
 ClassFatherSchema.virtual("materialss", {
-  ref: "Matrials",  // يجب أن يتطابق مع اسم المودل
+  ref: "Matrials", 
   foreignField: "classification",
   localField: "_id",
 });

@@ -57,6 +57,6 @@
     "multer": "^2.0.0",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^3.1.10",
-    "pm2": "^6.0.6"
+    "pm2": "^6.0.8"
   }
 }

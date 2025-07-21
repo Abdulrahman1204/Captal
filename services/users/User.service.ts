@@ -88,8 +88,15 @@ class UserService {
   }
 
   // ~ Get => /api/captal/user ~ GET Users
-  static async getUsers(): Promise<IUser[]> {
-    const users = await User.find().sort({ createdAt: -1 });
+  static async getUsers(role?: string): Promise<IUser[]> {
+    const query: any = {};
+    
+    // If role is provided, add it to the query
+    if (role) {
+      query.role = role;
+    }
+    
+    const users = await User.find(query).sort({ createdAt: -1 });
     return users;
   }
 
