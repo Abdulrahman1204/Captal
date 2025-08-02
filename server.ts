@@ -6,29 +6,11 @@ import helmet from "helmet";
 import connectDB from "./configs/connectToDb";
 import { errorHandler, notFound } from "./middlewares/error";
 import compression from "compression";
-
-// https
 import https from "https";
 import fs from "fs";
+import path from "path";
 
-// SSL Certificates
-// const sslOptions = {
-//   key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
-//   cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
-// };
-
-// routes import
-import routeAuth from "./routes/users/Auth.route";
-import routeUser from "./routes/users/User.route";
-import routeClassFather from "./routes/classifications/father/ClassFather.route";
-import routeClassSon from "./routes/classifications/son/ClassSon.route";
-import routeMaterial from "./routes/materials/material.route";
-import routeFinanceOrder from "./routes/orders/finance/Finance.route";
-import routeMaterialOrder from "./routes/orders/material/Material.route";
-import routeRehabilitationOrder from "./routes/orders/rehabilitation/Rehabilitation.route";
-import routeRecourseOrder from "./routes/orders/recourse/Recourse.route";
-
-// .env
+// Load environment variables
 dotenv.config();
 
 // Validate required environment variables
@@ -40,32 +22,33 @@ dotenv.config();
   }
 );
 
-// Connection To Db
+// Connect to MongoDB
 connectDB();
 
-// Init App
+// Initialize Express app
 const app: Application = express();
 
-// middleware
+// Middleware
 app.use(compression());
 app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 
-//Cors Policy
+// CORS Configuration
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://captalsa.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://captalsa.com",
+      "https://api.captalsa.com",
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Routes
-app.get("/", (req: Request, res: Response) => {
-  res.send("API is running in Captal");
-});
+// Health check
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({
     status: "healthy",
@@ -73,6 +56,23 @@ app.get("/health", (req: Request, res: Response) => {
     uptime: process.uptime(),
   });
 });
+
+// Home route
+app.get("/", (req: Request, res: Response) => {
+  res.send("API is running in Captal (HTTPS)");
+});
+
+// Routes
+import routeAuth from "./routes/users/Auth.route";
+import routeUser from "./routes/users/User.route";
+import routeClassFather from "./routes/classifications/father/ClassFather.route";
+import routeClassSon from "./routes/classifications/son/ClassSon.route";
+import routeMaterial from "./routes/materials/material.route";
+import routeFinanceOrder from "./routes/orders/finance/Finance.route";
+import routeMaterialOrder from "./routes/orders/material/Material.route";
+import routeRehabilitationOrder from "./routes/orders/rehabilitation/Rehabilitation.route";
+import routeRecourseOrder from "./routes/orders/recourse/Recourse.route";
+
 app.use("/api/captal/auth", routeAuth);
 app.use("/api/captal/user", routeUser);
 app.use("/api/captal/classficationMaterial", routeClassFather);
@@ -83,11 +83,18 @@ app.use("/api/captal/orderMaterial", routeMaterialOrder);
 app.use("/api/captal/orderQualification", routeRehabilitationOrder);
 app.use("/api/captal/recourseUserOrder", routeRecourseOrder);
 
-// Error Handler Middleware
+// Error handling
 app.use(notFound);
 app.use(errorHandler);
 
-//Running The Server
-const PORT: number = parseInt(process.env.PORT || "8000");
+// SSL Certificates
+const sslOptions = {
+  key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
+};
 
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+// Start HTTPS server
+const PORT: number = parseInt(process.env.PORT || "443");
+https.createServer(sslOptions, app).listen(PORT, () => {
+  console.log(`✅ HTTPS server is running on port ${PORT}`);
+});
