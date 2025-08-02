@@ -6,8 +6,8 @@ import helmet from "helmet";
 import connectDB from "./configs/connectToDb";
 import { errorHandler, notFound } from "./middlewares/error";
 import compression from "compression";
-// import https from "https";
-// import fs from "fs";
+import https from "https";
+import fs from "fs";
 import path from "path";
 
 // Load environment variables
@@ -87,13 +87,14 @@ app.use(notFound);
 app.use(errorHandler);
 
 // SSL Certificates
-// const sslOptions = {
-//   key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
-//   cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
-// };
+const sslOptions = {
+  key: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/captalsa.com/fullchain.pem"),
+};
 
 // Start HTTPS server
-const PORT: number = parseInt(process.env.PORT || "8000");
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
+const PORT: number = parseInt(process.env.PORT || "443");
+
+https.createServer(sslOptions, app).listen(PORT, () => {
+  console.log(`🚀 HTTPS Server running on https://0.0.0.0:${PORT}`);
 });
