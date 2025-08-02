@@ -10,7 +10,7 @@ router
   .route("")
   .post(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     ClassFatherController.createNewClassFatherCtrl
   )
   .get(

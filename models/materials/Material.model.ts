@@ -22,10 +22,12 @@ const MaterialSchema = new Schema(
       ref: "ClassFather",
       required: true,
     },
-    attachedFile: {
-      publicId: { type: String, default: null },
-      url: { type: String, default: "" },
-    },
+    attachments: [
+      {
+        publicId: { type: String, default: null },
+        url: { type: String, default: "" },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -39,7 +41,7 @@ const Material: Model<IMaterial> = mongoose.model<IMaterial>(
 );
 
 // Material Indexes
-MaterialSchema.index({ createdAt: -1 })
+MaterialSchema.index({ createdAt: -1 });
 
 // Validation Create Material
 const validationCreateMaterial = (obj: IMaterial): joi.ValidationResult => {
@@ -85,4 +87,4 @@ const validationUpdateMaterial = (obj: IMaterial): joi.ValidationResult => {
   return schema.validate(obj);
 };
 
-export { Material, validationCreateMaterial, validationUpdateMaterial }
+export { Material, validationCreateMaterial, validationUpdateMaterial };

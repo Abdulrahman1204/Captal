@@ -8,7 +8,11 @@ const router: Router = Router();
 // ~ Post => /api/captal/user ~ Create New User + // ~ Get => /api/captal/user ~ GET User
 router
   .route("")
-  .post(verifyToken, checkRole(["admin"]), UserController.createNewUserCtrl)
+  .post(
+    verifyToken,
+    checkRole(["admin", "intering"]),
+    UserController.createNewUserCtrl
+  )
   .get(verifyToken, checkRole(["admin"]), UserController.getUsersCtrl);
 
 // ~ PUT => /api/captal/user/:id ~ Update User + // ~ DELETE => /api/captal/user/:id ~ Delete User

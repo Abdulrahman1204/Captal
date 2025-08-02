@@ -16,6 +16,13 @@ export interface CloudinaryFile {
   originalname: string;
 }
 
+export interface CloudinaryFiles {
+  public_id?: string;
+  secure_url?: string;
+  filename?: string;
+  path?: string;
+  originalname?: string;
+}
 export interface ICloudinaryFile extends Express.Multer.File {
   secure_url: string;
   public_id: string;

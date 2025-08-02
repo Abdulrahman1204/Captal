@@ -39,9 +39,9 @@ class UserController {
   getUsersCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const { role } = req.query;
-      
+
       const users = await UserService.getUsers(role as string | undefined);
-  
+
       res.status(200).json(users);
     }
   );

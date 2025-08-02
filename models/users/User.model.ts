@@ -44,20 +44,69 @@ const UserSchema = new Schema(
       type: Date,
       required: [true, "تاريخ تأسيس الشركة مطلوب"],
     },
-    otp: {
-      type: String,
-      length: 6,
-    },
-    expiresAt: {
-      type: Date,
-    },
+    expiresAt: { type: Date },
+    otp: { type: String, length: 6 },
     role: {
       type: String,
       enum: {
-        values: ["admin", "contractor", "recourse"],
-        message: "الدور يجب أن يكون أحد: admin, contractor, recourse",
+        values: ["admin", "contractor", "recourse", "intering"],
+        message: "الدور يجب أن يكون أحد: admin, contractor, recourse, intering",
       },
     },
+
+    // معلومات المورد
+    supplierNumber: { type: String, trim: true },
+    supplierName: { type: String, trim: true },
+    entityType: { type: String, enum: ["company", "person"], trim: true },
+    legalEntity: { type: String, trim: true },
+    commercialRegistrationNumber: { type: String, trim: true },
+    taxNumber: { type: String, trim: true },
+    registrationDate: { type: Date },
+    resourceStatus: { type: Date },
+    typeOfTransaction: { type: Date },
+    exemptionOption: { type: String, trim: true },
+    internationalResource: { type: Boolean },
+    freezeTheAccount: { type: Boolean },
+    currency: { type: String, trim: true },
+    bankAccountNumber: { type: String, trim: true },
+    bankName: { type: String, trim: true },
+    taxDiscountRate: { type: Number },
+    paymentTerms: { type: String, trim: true },
+    contractStartDate: { type: Date },
+    contractEndDate: { type: Date },
+
+    // العنوان
+    address1: { type: String, trim: true },
+    address2: { type: String, trim: true },
+    city: { type: String, trim: true },
+    region: { type: String, trim: true },
+    postalCode: { type: String, trim: true },
+    country: { type: String, trim: true },
+    countryCode: { type: String, trim: true },
+
+    // الهوية
+    identityNumber: { type: String, trim: true },
+    nationality: { type: String, trim: true },
+    issuingAuthority: { type: String, trim: true },
+
+    // الاتصالات
+    mobile1: { type: String, trim: true },
+    mobile2: { type: String, trim: true },
+    mobile3: { type: String, trim: true },
+    fax: { type: String, trim: true },
+    emailOfficial: { type: String, trim: true },
+
+    // المسؤول
+    supplierRepresentative: { type: String, trim: true },
+
+    // إضافات
+    contact1: { type: String, trim: true },
+    contact2: { type: String, trim: true },
+    classification1: { type: String, trim: true },
+    classification2: { type: String, trim: true },
+    location: { type: String, trim: true },
+    notes: { type: String, trim: true },
+    attachments: [{ type: Object }],
   },
   {
     timestamps: true,
@@ -68,7 +117,7 @@ const UserSchema = new Schema(
 const User: Model<IUser> = mongoose.model<IUser>("User", UserSchema);
 
 // User Indexes
-UserSchema.index({ createdAt: -1 })
+UserSchema.index({ createdAt: -1 });
 
 // Validation Create User
 const validationCreateUser = (obj: IUser): joi.ValidationResult => {
@@ -110,11 +159,12 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
     }),
     role: joi
       .string()
-      .valid("contractor", "recourse", "admin")
+      .valid("contractor", "recourse", "admin", "intering")
       .required()
       .messages({
         "string.empty": "الدور لا يمكن أن يكون فارغاً",
-        "any.only": "الدور يجب أن يكون أحد: contractor, recourse, admin",
+        "any.only":
+          "الدور يجب أن يكون أحد: contractor, recourse, admin, intering",
         "any.required": "الدور مطلوب",
       }),
   });
@@ -124,13 +174,10 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
 // Validation Check Otp
 const validationOtp = (obj: IOtp): joi.ValidationResult => {
   const schema = joi.object({
-    otp: joi
-      .string()
-      .required()
-      .messages({
-        "string.empty": "لا يمكن أن يكون فارغاً",
-        "any.required": "مطلوب",
-      }),
+    otp: joi.string().required().messages({
+      "string.empty": "لا يمكن أن يكون فارغاً",
+      "any.required": "مطلوب",
+    }),
   });
   return schema.validate(obj);
 };
@@ -185,12 +232,22 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
       "string.max": "البريد الإلكتروني يجب ألا يتجاوز 100 حرف",
       "string.email": "البريد الإلكتروني يجب أن يكون صالحاً",
     }),
-    role: joi.string().valid("contractor", "recourse", "admin").messages({
-      "string.empty": "الدور لا يمكن أن يكون فارغاً",
-      "any.only": "الدور يجب أن يكون أحد: contractor, recourse, admin",
-    }),
+    role: joi
+      .string()
+      .valid("contractor", "recourse", "admin", "intering")
+      .messages({
+        "string.empty": "الدور لا يمكن أن يكون فارغاً",
+        "any.only":
+          "الدور يجب أن يكون أحد: contractor, recourse, admin, intering",
+      }),
   });
   return schema.validate(obj);
 };
 
-export { User, validationCreateUser, validationSendOtp, validationUpdateUser, validationOtp };
+export {
+  User,
+  validationCreateUser,
+  validationSendOtp,
+  validationUpdateUser,
+  validationOtp,
+};

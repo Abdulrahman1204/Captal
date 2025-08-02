@@ -88,7 +88,9 @@ class ClassSonService {
 
   // ~ GET => /api/captal/ClassSon ~ Get All Classification Son
   static async getClassSon(): Promise<IClassSon[]> {
-    const classesSon = await ClassSon.find().sort({ createdAt: -1 });
+    const classesSon = await ClassSon.find()
+      .populate("fatherName") 
+      .sort({ createdAt: -1 });
 
     return classesSon;
   }
