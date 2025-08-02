@@ -94,7 +94,7 @@ const sslOptions = {
 };
 
 // Start HTTPS server
-const PORT: number = parseInt(process.env.PORT || "443");
+const PORT: number = parseInt(process.env.PORT || "8000");
 https.createServer(sslOptions, app).listen(PORT, () => {
   console.log(`✅ HTTPS server is running on port ${PORT}`);
 });
