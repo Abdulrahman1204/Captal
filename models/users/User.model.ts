@@ -229,15 +229,6 @@ const validationOtp = (obj: IOtp): joi.ValidationResult => {
       "string.length": "رمز التحقق يجب أن يتكون من 6 أرقام",
       "any.required": "رمز التحقق مطلوب",
     }),
-    phone: joi
-      .string()
-      .pattern(/^[0-9]{10}$/)
-      .required()
-      .messages({
-        "string.empty": "رقم الهاتف لا يمكن أن يكون فارغاً",
-        "string.pattern.base": "رقم الهاتف يجب أن يتكون من 10 أرقام فقط",
-        "any.required": "رقم الهاتف مطلوب",
-      }),
   });
   return schema.validate(obj, { abortEarly: false });
 };
