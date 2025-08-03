@@ -57,7 +57,12 @@ const UserSchema = new Schema(
     // معلومات المورد
     supplierNumber: { type: String, trim: true },
     supplierName: { type: String, trim: true },
-    entityType: { type: String, enum: ["company", "person"], trim: true },
+    entityType: {
+      type: String,
+      enum: ["company", "person"],
+      trim: true,
+      required: false,
+    },
     legalEntity: { type: String, trim: true },
     commercialRegistrationNumber: { type: String, trim: true },
     taxNumber: { type: String, trim: true },
@@ -170,7 +175,7 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
     // Optional fields with appropriate validation
     supplierNumber: joi.string().trim().allow(""),
     supplierName: joi.string().trim().allow(""),
-    entityType: joi.string().valid("company", "person").trim().allow(""),
+    entityType: joi.string().valid("company", "person").trim().allow("", null),
     legalEntity: joi.string().trim().allow(""),
     commercialRegistrationNumber: joi.string().trim().allow(""),
     taxNumber: joi.string().trim().allow(""),
@@ -295,7 +300,7 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
     // All other fields with optional validation
     supplierNumber: joi.string().trim().allow(""),
     supplierName: joi.string().trim().allow(""),
-    entityType: joi.string().valid("company", "person").trim().allow(""),
+    entityType: joi.string().valid("company", "person").trim().allow("", null),
     legalEntity: joi.string().trim().allow(""),
     commercialRegistrationNumber: joi.string().trim().allow(""),
     taxNumber: joi.string().trim().allow(""),
