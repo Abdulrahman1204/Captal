@@ -41,7 +41,7 @@ class UserService {
       // معلومات المورد
       supplierNumber: userData.supplierNumber,
       supplierName: userData.supplierName,
-      entityType: userData.entityType,
+      entityType: userData.entityType || undefined,
       legalEntity: userData.legalEntity,
       commercialRegistrationNumber: userData.commercialRegistrationNumber,
       taxNumber: userData.taxNumber,
