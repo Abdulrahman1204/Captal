@@ -55,63 +55,220 @@ const UserSchema = new Schema(
     },
 
     // معلومات المورد
-    supplierNumber: { type: String, trim: true },
-    supplierName: { type: String, trim: true },
+    supplierNumber: {
+      type: String,
+      validate: {
+        message: "رقم المورد يجب أن يكون بين 5-20 حرف/رقم",
+      },
+    },
+    supplierName: {
+      type: String,
+      maxlength: [100, "اسم المورد لا يجب أن يتجاوز 100 حرف"],
+    },
     entityType: {
       type: String,
-      enum: ["company", "person"],
-      trim: true,
-      required: false,
+      enum: {
+        message: "نوع الكيان يجب أن يكون: company أو person",
+      },
     },
-    legalEntity: { type: String, trim: true },
-    commercialRegistrationNumber: { type: String, trim: true },
-    taxNumber: { type: String, trim: true },
-    registrationDate: { type: Date },
-    resourceStatus: { type: String },
-    typeOfTransaction: { type: String },
-    exemptionOption: { type: String, trim: true },
-    internationalResource: { type: Boolean },
-    freezeTheAccount: { type: Boolean },
-    currency: { type: String, trim: true },
-    bankAccountNumber: { type: String, trim: true },
-    bankName: { type: String, trim: true },
-    taxDiscountRate: { type: Number },
-    paymentTerms: { type: String, trim: true },
-    contractStartDate: { type: Date },
-    contractEndDate: { type: Date },
-
-    // العنوان
-    address1: { type: String, trim: true },
-    address2: { type: String, trim: true },
-    city: { type: String, trim: true },
-    region: { type: String, trim: true },
-    postalCode: { type: String, trim: true },
-    country: { type: String, trim: true },
-    countryCode: { type: String, trim: true },
-
-    // الهوية
-    identityNumber: { type: String, trim: true },
-    nationality: { type: String, trim: true },
-    issuingAuthority: { type: String, trim: true },
-
-    // الاتصالات
-    mobile1: { type: String, trim: true },
-    mobile2: { type: String, trim: true },
-    mobile3: { type: String, trim: true },
-    fax: { type: String, trim: true },
-    emailOfficial: { type: String, trim: true },
-
-    // المسؤول
-    supplierRepresentative: { type: String, trim: true },
-
-    // إضافات
-    contact1: { type: String, trim: true },
-    contact2: { type: String, trim: true },
-    classification1: { type: String, trim: true },
-    classification2: { type: String, trim: true },
-    location: { type: String, trim: true },
-    notes: { type: String, trim: true },
-    attachments: [{ type: Object }],
+    legalEntity: {
+      type: String,
+      maxlength: [200, "الكيان القانوني لا يجب أن يتجاوز 200 حرف"],
+    },
+    commercialRegistrationNumber: {
+      type: String,
+      validate: {
+        message: "رقم السجل التجاري يجب أن يتكون من 10 أرقام",
+      },
+    },
+    taxNumber: {
+      type: String,
+      validate: {
+        message: "الرقم الضريبي يجب أن يتكون من 15 رقماً ويبدأ بـ 3",
+      },
+    },
+    registrationDate: {
+      type: Date,
+      validate: {
+        message: "تاريخ التسجيل لا يمكن أن يكون في المستقبل",
+      },
+    },
+    resourceStatus: {
+      type: String,
+      enum: {
+        message:
+          "حالة المورد يجب أن تكون: active, inactive, suspended, pending",
+      },
+    },
+    typeOfTransaction: {
+      type: String,
+      enum: {
+        message:
+          "نوع المعاملة يجب أن يكون: cash, credit, installments, bankTransfer",
+      },
+    },
+    exemptionOption: {
+      type: String,
+      maxlength: [100, "خيار الإعفاء لا يجب أن يتجاوز 100 حرف"],
+    },
+    internationalResource: {
+      type: Boolean,
+      validate: {
+        message: "مورد دولي يجب أن يكون true أو false",
+      },
+    },
+    freezeTheAccount: {
+      type: Boolean,
+      validate: {
+        message: "تجميد الحساب يجب أن يكون true أو false",
+      },
+    },
+    currency: {
+      type: String,
+      enum: {
+        message: "العملة يجب أن تكون: SAR, USD, EUR, AED",
+      },
+    },
+    bankAccountNumber: {
+      type: String,
+      validate: {
+        message: "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
+      },
+    },
+    bankName: {
+      type: String,
+      maxlength: [100, "اسم البنك لا يجب أن يتجاوز 100 حرف"],
+    },
+    taxDiscountRate: {
+      type: Number,
+      validate: {
+        message: "نسبة الخصم الضريبي لا يمكن أن تكون أقل من 0",
+      },
+    },
+    paymentTerms: {
+      type: String,
+      maxlength: [500, "شروط الدفع لا يجب أن تتجاوز 500 حرف"],
+    },
+    contractStartDate: {
+      type: Date,
+      validate: {
+        message: "تاريخ بدء العقد يجب أن يكون تاريخاً صالحاً",
+      },
+    },
+    contractEndDate: {
+      type: Date,
+      validate: {
+        message: "تاريخ انتهاء العقد يجب أن يكون بعد تاريخ البدء",
+      },
+    },
+    address1: {
+      type: String,
+      maxlength: [200, "العنوان الأول لا يجب أن يتجاوز 200 حرف"],
+    },
+    address2: {
+      type: String,
+      maxlength: [200, "العنوان الثاني لا يجب أن يتجاوز 200 حرف"],
+    },
+    city: {
+      type: String,
+      maxlength: [50, "المدينة لا يجب أن تتجاوز 50 حرف"],
+    },
+    region: {
+      type: String,
+      maxlength: [50, "المنطقة لا يجب أن تتجاوز 50 حرف"],
+    },
+    postalCode: {
+      type: String,
+      validate: {
+        message: "الرمز البريدي يجب أن يتكون من 5 أرقام",
+      },
+    },
+    country: {
+      type: String,
+      maxlength: [50, "البلد لا يجب أن يتجاوز 50 حرف"],
+    },
+    countryCode: {
+      type: String,
+      maxlength: [5, "رمز البلد لا يجب أن يتجاوز 5 أحرف"],
+    },
+    identityNumber: {
+      type: String,
+      validate: {
+        message: "رقم الهوية يجب أن يتكون من 10 أرقام",
+      },
+    },
+    nationality: {
+      type: String,
+      maxlength: [50, "الجنسية لا يجب أن تتجاوز 50 حرف"],
+    },
+    issuingAuthority: {
+      type: String,
+      maxlength: [100, "جهة الإصدار لا يجب أن تتجاوز 100 حرف"],
+    },
+    mobile1: {
+      type: String,
+      validate: {
+        message: "رقم الجوال 1 يجب أن يكون رقم سعودي صحيح",
+      },
+    },
+    mobile2: {
+      type: String,
+      validate: {
+        message: "رقم الجوال 2 يجب أن يكون رقم سعودي صحيح",
+      },
+    },
+    mobile3: {
+      type: String,
+      validate: {
+        message: "رقم الجوال 3 يجب أن يكون رقم سعودي صحيح",
+      },
+    },
+    fax: {
+      type: String,
+      validate: {
+        message: "رقم الفاكس يجب أن يكون رقم صحيح",
+      },
+    },
+    emailOfficial: {
+      type: String,
+      validate: {
+        message: "البريد الإلكتروني الرسمي يجب أن يكون صالحاً",
+      },
+    },
+    supplierRepresentative: {
+      type: String,
+      maxlength: [100, "ممثل المورد لا يجب أن يتجاوز 100 حرف"],
+    },
+    contact1: {
+      type: String,
+      maxlength: [100, "الاتصال 1 لا يجب أن يتجاوز 100 حرف"],
+    },
+    contact2: {
+      type: String,
+      maxlength: [100, "الاتصال 2 لا يجب أن يتجاوز 100 حرف"],
+    },
+    classification1: {
+      type: String,
+      maxlength: [100, "التصنيف 1 لا يجب أن يتجاوز 100 حرف"],
+    },
+    classification2: {
+      type: String,
+      maxlength: [100, "التصنيف 2 لا يجب أن يتجاوز 100 حرف"],
+    },
+    location: {
+      type: String,
+      maxlength: [200, "الموقع لا يجب أن يتجاوز 200 حرف"],
+    },
+    notes: {
+      type: String,
+      maxlength: [1000, "الملاحظات لا يجب أن تتجاوز 1000 حرف"],
+    },
+    attachments: {
+      type: [Object],
+      validate: {
+        message: "المرفقات يجب أن تكون مصفوفة من الكائنات",
+      },
+    },
   },
   {
     timestamps: true,
@@ -173,51 +330,153 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
         "any.required": "الدور مطلوب",
       }),
     // Optional fields with appropriate validation
-    supplierNumber: joi.string().trim().allow(""),
-    supplierName: joi.string().trim().allow(""),
-    entityType: joi.string().valid("company", "person").trim().allow("", null),
-    legalEntity: joi.string().trim().allow(""),
-    commercialRegistrationNumber: joi.string().trim().allow(""),
-    taxNumber: joi.string().trim().allow(""),
-    registrationDate: joi.date().allow(null),
-    resourceStatus: joi.string().allow(""),
-    typeOfTransaction: joi.string().allow(""),
-    exemptionOption: joi.string().trim().allow(""),
-    internationalResource: joi.boolean(),
-    freezeTheAccount: joi.boolean(),
-    currency: joi.string().trim().allow(""),
-    bankAccountNumber: joi.string().trim().allow(""),
-    bankName: joi.string().trim().allow(""),
-    taxDiscountRate: joi.number().allow(null),
-    paymentTerms: joi.string().trim().allow(""),
-    contractStartDate: joi.date().allow(null),
-    contractEndDate: joi.date().allow(null),
-    address1: joi.string().trim().allow(""),
-    address2: joi.string().trim().allow(""),
-    city: joi.string().trim().allow(""),
-    region: joi.string().trim().allow(""),
-    postalCode: joi.string().trim().allow(""),
-    country: joi.string().trim().allow(""),
-    countryCode: joi.string().trim().allow(""),
-    identityNumber: joi.string().trim().allow(""),
-    nationality: joi.string().trim().allow(""),
-    issuingAuthority: joi.string().trim().allow(""),
-    mobile1: joi.string().trim().allow(""),
-    mobile2: joi.string().trim().allow(""),
-    mobile3: joi.string().trim().allow(""),
-    fax: joi.string().trim().allow(""),
+    supplierNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم المورد يجب أن يكون بين 5-20 حرف/رقم",
+    }),
+    supplierName: joi.string().trim().max(100).allow("").messages({
+      "string.max": "اسم المورد لا يجب أن يتجاوز 100 حرف",
+    }),
+    entityType: joi
+      .string()
+      .valid("company", "person")
+      .allow("", null)
+      .messages({
+        "any.only": "نوع الكيان يجب أن يكون company أو person",
+      }),
+    legalEntity: joi.string().trim().max(200).allow("").messages({
+      "string.max": "الكيان القانوني لا يجب أن يتجاوز 200 حرف",
+    }),
+    commercialRegistrationNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم السجل التجاري يجب أن يتكون من 10 أرقام",
+    }),
+    taxNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base":
+        "الرقم الضريبي يجب أن يتكون من 15 رقماً ويبدأ بـ 3",
+    }),
+    registrationDate: joi.date().allow(null).messages({
+      "date.base": "تاريخ التسجيل يجب أن يكون تاريخاً صالحاً",
+    }),
+    resourceStatus: joi
+      .string()
+      .valid("active", "inactive", "suspended", "pending")
+      .allow("")
+      .messages({
+        "any.only":
+          "حالة المورد يجب أن تكون: active, inactive, suspended, pending",
+      }),
+    typeOfTransaction: joi
+      .string()
+      .valid("cash", "credit", "installments", "bankTransfer")
+      .allow("")
+      .messages({
+        "any.only":
+          "نوع المعاملة يجب أن يكون: cash, credit, installments, bankTransfer",
+      }),
+    exemptionOption: joi.string().trim().max(100).allow("").messages({
+      "string.max": "خيار الإعفاء لا يجب أن يتجاوز 100 حرف",
+    }),
+    internationalResource: joi.boolean().messages({
+      "boolean.base": "مورد دولي يجب أن يكون true أو false",
+    }),
+    freezeTheAccount: joi.boolean().messages({
+      "boolean.base": "تجميد الحساب يجب أن يكون true أو false",
+    }),
+    currency: joi
+      .string()
+      .valid("SAR", "USD", "EUR", "AED")
+      .allow("")
+      .messages({
+        "any.only": "العملة يجب أن تكون: SAR, USD, EUR, AED",
+      }),
+    bankAccountNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
+    }),
+    bankName: joi.string().trim().max(100).allow("").messages({
+      "string.max": "اسم البنك لا يجب أن يتجاوز 100 حرف",
+    }),
+    taxDiscountRate: joi.number().min(0).allow(null).messages({
+      "number.min": "نسبة الخصم الضريبي لا يمكن أن تكون أقل من 0",
+    }),
+    paymentTerms: joi.string().trim().max(500).allow("").messages({
+      "string.max": "شروط الدفع لا يجب أن تتجاوز 500 حرف",
+    }),
+    contractStartDate: joi.date().allow(null).messages({
+      "date.base": "تاريخ بدء العقد يجب أن يكون تاريخاً صالحاً",
+    }),
+    contractEndDate: joi.date().allow(null).messages({
+      "date.base": "تاريخ انتهاء العقد يجب أن يكون تاريخاً صالحاً",
+    }),
+    address1: joi.string().trim().max(200).allow("").messages({
+      "string.max": "العنوان الأول لا يجب أن يتجاوز 200 حرف",
+    }),
+    address2: joi.string().trim().max(200).allow("").messages({
+      "string.max": "العنوان الثاني لا يجب أن يتجاوز 200 حرف",
+    }),
+    city: joi.string().trim().max(50).allow("").messages({
+      "string.max": "المدينة لا يجب أن تتجاوز 50 حرف",
+    }),
+    region: joi.string().trim().max(50).allow("").messages({
+      "string.max": "المنطقة لا يجب أن تتجاوز 50 حرف",
+    }),
+    postalCode: joi.string().trim().allow("").messages({
+      "string.pattern.base": "الرمز البريدي يجب أن يتكون من 5 أرقام",
+    }),
+    country: joi.string().trim().max(50).allow("").messages({
+      "string.max": "البلد لا يجب أن يتجاوز 50 حرف",
+    }),
+    countryCode: joi.string().trim().max(5).allow("").messages({
+      "string.max": "رمز البلد لا يجب أن يتجاوز 5 أحرف",
+    }),
+    identityNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الهوية يجب أن يتكون من 10 أرقام",
+    }),
+    nationality: joi.string().trim().max(50).allow("").messages({
+      "string.max": "الجنسية لا يجب أن تتجاوز 50 حرف",
+    }),
+    issuingAuthority: joi.string().trim().max(100).allow("").messages({
+      "string.max": "جهة الإصدار لا يجب أن تتجاوز 100 حرف",
+    }),
+    mobile1: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الجوال 1 يجب أن يكون رقم سعودي صحيح",
+    }),
+    mobile2: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الجوال 2 يجب أن يكون رقم سعودي صحيح",
+    }),
+    mobile3: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الجوال 3 يجب أن يكون رقم سعودي صحيح",
+    }),
+    fax: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الفاكس يجب أن يكون رقم صحيح",
+    }),
     emailOfficial: joi.string().trim().email().allow("").messages({
       "string.email": "البريد الإلكتروني الرسمي يجب أن يكون صالحاً",
     }),
-    supplierRepresentative: joi.string().trim().allow(""),
-    contact1: joi.string().trim().allow(""),
-    contact2: joi.string().trim().allow(""),
-    classification1: joi.string().trim().allow(""),
-    classification2: joi.string().trim().allow(""),
-    location: joi.string().trim().allow(""),
-    notes: joi.string().trim().allow(""),
-    attachments: joi.array().items(joi.object()),
+    supplierRepresentative: joi.string().trim().max(100).allow("").messages({
+      "string.max": "ممثل المورد لا يجب أن يتجاوز 100 حرف",
+    }),
+    contact1: joi.string().trim().max(100).allow("").messages({
+      "string.max": "الاتصال 1 لا يجب أن يتجاوز 100 حرف",
+    }),
+    contact2: joi.string().trim().max(100).allow("").messages({
+      "string.max": "الاتصال 2 لا يجب أن يتجاوز 100 حرف",
+    }),
+    classification1: joi.string().trim().max(100).allow("").messages({
+      "string.max": "التصنيف 1 لا يجب أن يتجاوز 100 حرف",
+    }),
+    classification2: joi.string().trim().max(100).allow("").messages({
+      "string.max": "التصنيف 2 لا يجب أن يتجاوز 100 حرف",
+    }),
+    location: joi.string().trim().max(200).allow("").messages({
+      "string.max": "الموقع لا يجب أن يتجاوز 200 حرف",
+    }),
+    notes: joi.string().trim().max(1000).allow("").messages({
+      "string.max": "الملاحظات لا يجب أن تتجاوز 1000 حرف",
+    }),
+    attachments: joi.array().items(joi.object()).messages({
+      "array.base": "المرفقات يجب أن تكون مصفوفة من الكائنات",
+    }),
   });
+
   return schema.validate(obj, { abortEarly: false });
 };
 
@@ -289,51 +548,153 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
           "الدور يجب أن يكون أحد: admin, contractor, recourse, intering",
       }),
     // All other fields with optional validation
-    supplierNumber: joi.string().trim().allow(""),
-    supplierName: joi.string().trim().allow(""),
-    entityType: joi.string().valid("company", "person").trim().allow("", null),
-    legalEntity: joi.string().trim().allow(""),
-    commercialRegistrationNumber: joi.string().trim().allow(""),
-    taxNumber: joi.string().trim().allow(""),
-    registrationDate: joi.date().allow(null),
-    resourceStatus: joi.string().allow(""),
-    typeOfTransaction: joi.string().allow(""),
-    exemptionOption: joi.string().trim().allow(""),
-    internationalResource: joi.boolean(),
-    freezeTheAccount: joi.boolean(),
-    currency: joi.string().trim().allow(""),
-    bankAccountNumber: joi.string().trim().allow(""),
-    bankName: joi.string().trim().allow(""),
-    taxDiscountRate: joi.number().allow(null),
-    paymentTerms: joi.string().trim().allow(""),
-    contractStartDate: joi.date().allow(null),
-    contractEndDate: joi.date().allow(null),
-    address1: joi.string().trim().allow(""),
-    address2: joi.string().trim().allow(""),
-    city: joi.string().trim().allow(""),
-    region: joi.string().trim().allow(""),
-    postalCode: joi.string().trim().allow(""),
-    country: joi.string().trim().allow(""),
-    countryCode: joi.string().trim().allow(""),
-    identityNumber: joi.string().trim().allow(""),
-    nationality: joi.string().trim().allow(""),
-    issuingAuthority: joi.string().trim().allow(""),
-    mobile1: joi.string().trim().allow(""),
-    mobile2: joi.string().trim().allow(""),
-    mobile3: joi.string().trim().allow(""),
-    fax: joi.string().trim().allow(""),
+    supplierNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم المورد يجب أن يكون بين 5-20 حرف/رقم",
+    }),
+    supplierName: joi.string().trim().max(100).allow("").messages({
+      "string.max": "اسم المورد لا يجب أن يتجاوز 100 حرف",
+    }),
+    entityType: joi
+      .string()
+      .valid("company", "person")
+      .allow("", null)
+      .messages({
+        "any.only": "نوع الكيان يجب أن يكون company أو person",
+      }),
+    legalEntity: joi.string().trim().max(200).allow("").messages({
+      "string.max": "الكيان القانوني لا يجب أن يتجاوز 200 حرف",
+    }),
+    commercialRegistrationNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم السجل التجاري يجب أن يتكون من 10 أرقام",
+    }),
+    taxNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base":
+        "الرقم الضريبي يجب أن يتكون من 15 رقماً ويبدأ بـ 3",
+    }),
+    registrationDate: joi.date().allow(null).messages({
+      "date.base": "تاريخ التسجيل يجب أن يكون تاريخاً صالحاً",
+    }),
+    resourceStatus: joi
+      .string()
+      .valid("active", "inactive", "suspended", "pending")
+      .allow("")
+      .messages({
+        "any.only":
+          "حالة المورد يجب أن تكون: active, inactive, suspended, pending",
+      }),
+    typeOfTransaction: joi
+      .string()
+      .valid("cash", "credit", "installments", "bankTransfer")
+      .allow("")
+      .messages({
+        "any.only":
+          "نوع المعاملة يجب أن يكون: cash, credit, installments, bankTransfer",
+      }),
+    exemptionOption: joi.string().trim().max(100).allow("").messages({
+      "string.max": "خيار الإعفاء لا يجب أن يتجاوز 100 حرف",
+    }),
+    internationalResource: joi.boolean().messages({
+      "boolean.base": "مورد دولي يجب أن يكون true أو false",
+    }),
+    freezeTheAccount: joi.boolean().messages({
+      "boolean.base": "تجميد الحساب يجب أن يكون true أو false",
+    }),
+    currency: joi
+      .string()
+      .valid("SAR", "USD", "EUR", "AED")
+      .allow("")
+      .messages({
+        "any.only": "العملة يجب أن تكون: SAR, USD, EUR, AED",
+      }),
+    bankAccountNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
+    }),
+    bankName: joi.string().trim().max(100).allow("").messages({
+      "string.max": "اسم البنك لا يجب أن يتجاوز 100 حرف",
+    }),
+    taxDiscountRate: joi.number().min(0).allow(null).messages({
+      "number.min": "نسبة الخصم الضريبي لا يمكن أن تكون أقل من 0",
+    }),
+    paymentTerms: joi.string().trim().max(500).allow("").messages({
+      "string.max": "شروط الدفع لا يجب أن تتجاوز 500 حرف",
+    }),
+    contractStartDate: joi.date().allow(null).messages({
+      "date.base": "تاريخ بدء العقد يجب أن يكون تاريخاً صالحاً",
+    }),
+    contractEndDate: joi.date().allow(null).messages({
+      "date.base": "تاريخ انتهاء العقد يجب أن يكون تاريخاً صالحاً",
+    }),
+    address1: joi.string().trim().max(200).allow("").messages({
+      "string.max": "العنوان الأول لا يجب أن يتجاوز 200 حرف",
+    }),
+    address2: joi.string().trim().max(200).allow("").messages({
+      "string.max": "العنوان الثاني لا يجب أن يتجاوز 200 حرف",
+    }),
+    city: joi.string().trim().max(50).allow("").messages({
+      "string.max": "المدينة لا يجب أن تتجاوز 50 حرف",
+    }),
+    region: joi.string().trim().max(50).allow("").messages({
+      "string.max": "المنطقة لا يجب أن تتجاوز 50 حرف",
+    }),
+    postalCode: joi.string().trim().allow("").messages({
+      "string.pattern.base": "الرمز البريدي يجب أن يتكون من 5 أرقام",
+    }),
+    country: joi.string().trim().max(50).allow("").messages({
+      "string.max": "البلد لا يجب أن يتجاوز 50 حرف",
+    }),
+    countryCode: joi.string().trim().max(5).allow("").messages({
+      "string.max": "رمز البلد لا يجب أن يتجاوز 5 أحرف",
+    }),
+    identityNumber: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الهوية يجب أن يتكون من 10 أرقام",
+    }),
+    nationality: joi.string().trim().max(50).allow("").messages({
+      "string.max": "الجنسية لا يجب أن تتجاوز 50 حرف",
+    }),
+    issuingAuthority: joi.string().trim().max(100).allow("").messages({
+      "string.max": "جهة الإصدار لا يجب أن تتجاوز 100 حرف",
+    }),
+    mobile1: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الجوال 1 يجب أن يكون رقم سعودي صحيح",
+    }),
+    mobile2: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الجوال 2 يجب أن يكون رقم سعودي صحيح",
+    }),
+    mobile3: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الجوال 3 يجب أن يكون رقم سعودي صحيح",
+    }),
+    fax: joi.string().trim().allow("").messages({
+      "string.pattern.base": "رقم الفاكس يجب أن يكون رقم صحيح",
+    }),
     emailOfficial: joi.string().trim().email().allow("").messages({
       "string.email": "البريد الإلكتروني الرسمي يجب أن يكون صالحاً",
     }),
-    supplierRepresentative: joi.string().trim().allow(""),
-    contact1: joi.string().trim().allow(""),
-    contact2: joi.string().trim().allow(""),
-    classification1: joi.string().trim().allow(""),
-    classification2: joi.string().trim().allow(""),
-    location: joi.string().trim().allow(""),
-    notes: joi.string().trim().allow(""),
-    attachments: joi.array().items(joi.object()),
+    supplierRepresentative: joi.string().trim().max(100).allow("").messages({
+      "string.max": "ممثل المورد لا يجب أن يتجاوز 100 حرف",
+    }),
+    contact1: joi.string().trim().max(100).allow("").messages({
+      "string.max": "الاتصال 1 لا يجب أن يتجاوز 100 حرف",
+    }),
+    contact2: joi.string().trim().max(100).allow("").messages({
+      "string.max": "الاتصال 2 لا يجب أن يتجاوز 100 حرف",
+    }),
+    classification1: joi.string().trim().max(100).allow("").messages({
+      "string.max": "التصنيف 1 لا يجب أن يتجاوز 100 حرف",
+    }),
+    classification2: joi.string().trim().max(100).allow("").messages({
+      "string.max": "التصنيف 2 لا يجب أن يتجاوز 100 حرف",
+    }),
+    location: joi.string().trim().max(200).allow("").messages({
+      "string.max": "الموقع لا يجب أن يتجاوز 200 حرف",
+    }),
+    notes: joi.string().trim().max(1000).allow("").messages({
+      "string.max": "الملاحظات لا يجب أن تتجاوز 1000 حرف",
+    }),
+    attachments: joi.array().items(joi.object()).messages({
+      "array.base": "المرفقات يجب أن تكون مصفوفة من الكائنات",
+    }),
   });
+
   return schema.validate(obj, { abortEarly: false });
 };
 
