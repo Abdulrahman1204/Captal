@@ -57,9 +57,7 @@ const UserSchema = new Schema(
     // معلومات المورد
     supplierNumber: {
       type: String,
-      validate: {
-        message: "رقم المورد يجب أن يكون بين 5-20 حرف/رقم",
-      },
+      message: "رقم المورد يجب أن يكون بين 5-20 حرف/رقم",
     },
     supplierName: {
       type: String,
@@ -77,21 +75,15 @@ const UserSchema = new Schema(
     },
     commercialRegistrationNumber: {
       type: String,
-      validate: {
-        message: "رقم السجل التجاري يجب أن يتكون من 10 أرقام",
-      },
+      message: "رقم السجل التجاري يجب أن يتكون من 10 أرقام",
     },
     taxNumber: {
       type: String,
-      validate: {
-        message: "الرقم الضريبي يجب أن يتكون من 15 رقماً ويبدأ بـ 3",
-      },
+      message: "الرقم الضريبي يجب أن يتكون من 15 رقماً ويبدأ بـ 3",
     },
     registrationDate: {
       type: Date,
-      validate: {
-        message: "تاريخ التسجيل لا يمكن أن يكون في المستقبل",
-      },
+      message: "تاريخ التسجيل لا يمكن أن يكون في المستقبل",
     },
     resourceStatus: {
       type: String,
@@ -113,15 +105,11 @@ const UserSchema = new Schema(
     },
     internationalResource: {
       type: Boolean,
-      validate: {
-        message: "مورد دولي يجب أن يكون true أو false",
-      },
+      message: "مورد دولي يجب أن يكون true أو false",
     },
     freezeTheAccount: {
       type: Boolean,
-      validate: {
-        message: "تجميد الحساب يجب أن يكون true أو false",
-      },
+      message: "تجميد الحساب يجب أن يكون true أو false",
     },
     currency: {
       type: String,
@@ -131,9 +119,7 @@ const UserSchema = new Schema(
     },
     bankAccountNumber: {
       type: String,
-      validate: {
-        message: "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
-      },
+      message: "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
     },
     bankName: {
       type: String,
@@ -141,9 +127,7 @@ const UserSchema = new Schema(
     },
     taxDiscountRate: {
       type: Number,
-      validate: {
-        message: "نسبة الخصم الضريبي لا يمكن أن تكون أقل من 0",
-      },
+      message: "نسبة الخصم الضريبي لا يمكن أن تكون أقل من 0",
     },
     paymentTerms: {
       type: String,
@@ -151,15 +135,11 @@ const UserSchema = new Schema(
     },
     contractStartDate: {
       type: Date,
-      validate: {
-        message: "تاريخ بدء العقد يجب أن يكون تاريخاً صالحاً",
-      },
+      message: "تاريخ بدء العقد يجب أن يكون تاريخاً صالحاً",
     },
     contractEndDate: {
       type: Date,
-      validate: {
-        message: "تاريخ انتهاء العقد يجب أن يكون بعد تاريخ البدء",
-      },
+      message: "تاريخ انتهاء العقد يجب أن يكون بعد تاريخ البدء",
     },
     address1: {
       type: String,
@@ -179,9 +159,7 @@ const UserSchema = new Schema(
     },
     postalCode: {
       type: String,
-      validate: {
-        message: "الرمز البريدي يجب أن يتكون من 5 أرقام",
-      },
+      message: "الرمز البريدي يجب أن يتكون من 5 أرقام",
     },
     country: {
       type: String,
@@ -193,9 +171,7 @@ const UserSchema = new Schema(
     },
     identityNumber: {
       type: String,
-      validate: {
-        message: "رقم الهوية يجب أن يتكون من 10 أرقام",
-      },
+      message: "رقم الهوية يجب أن يتكون من 10 أرقام",
     },
     nationality: {
       type: String,
@@ -207,33 +183,23 @@ const UserSchema = new Schema(
     },
     mobile1: {
       type: String,
-      validate: {
-        message: "رقم الجوال 1 يجب أن يكون رقم سعودي صحيح",
-      },
+      message: "رقم الجوال 1 يجب أن يكون رقم سعودي صحيح",
     },
     mobile2: {
       type: String,
-      validate: {
-        message: "رقم الجوال 2 يجب أن يكون رقم سعودي صحيح",
-      },
+      message: "رقم الجوال 2 يجب أن يكون رقم سعودي صحيح",
     },
     mobile3: {
       type: String,
-      validate: {
-        message: "رقم الجوال 3 يجب أن يكون رقم سعودي صحيح",
-      },
+      message: "رقم الجوال 3 يجب أن يكون رقم سعودي صحيح",
     },
     fax: {
       type: String,
-      validate: {
-        message: "رقم الفاكس يجب أن يكون رقم صحيح",
-      },
+      message: "رقم الفاكس يجب أن يكون رقم صحيح",
     },
     emailOfficial: {
       type: String,
-      validate: {
-        message: "البريد الإلكتروني الرسمي يجب أن يكون صالحاً",
-      },
+      message: "البريد الإلكتروني الرسمي يجب أن يكون صالحاً",
     },
     supplierRepresentative: {
       type: String,
@@ -265,9 +231,7 @@ const UserSchema = new Schema(
     },
     attachments: {
       type: [Object],
-      validate: {
-        message: "المرفقات يجب أن تكون مصفوفة من الكائنات",
-      },
+      message: "المرفقات يجب أن تكون مصفوفة من الكائنات",
     },
   },
   {
