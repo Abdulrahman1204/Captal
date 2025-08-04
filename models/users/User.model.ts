@@ -36,13 +36,11 @@ const UserSchema = new Schema(
     },
     companyName: {
       type: String,
-      required: [true, "اسم الشركة مطلوب"],
       trim: true,
       maxlength: [100, "اسم الشركة يجب ألا يتجاوز 100 حرف"],
     },
     DateOfCompany: {
       type: Date,
-      required: [true, "تاريخ تأسيس الشركة مطلوب"],
     },
     expiresAt: { type: Date },
     otp: { type: String, length: 6 },
@@ -274,14 +272,12 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
       "string.email": "البريد الإلكتروني يجب أن يكون صالحاً",
       "any.required": "البريد الإلكتروني مطلوب",
     }),
-    companyName: joi.string().trim().max(100).required().messages({
+    companyName: joi.string().trim().max(100).messages({
       "string.empty": "اسم الشركة لا يمكن أن يكون فارغاً",
       "string.max": "اسم الشركة يجب ألا يتجاوز 100 حرف",
-      "any.required": "اسم الشركة مطلوب",
     }),
-    DateOfCompany: joi.date().required().messages({
+    DateOfCompany: joi.date().messages({
       "date.base": "تاريخ الشركة يجب أن يكون تاريخاً صالحاً",
-      "any.required": "تاريخ تأسيس الشركة مطلوب",
     }),
     role: joi
       .string()
