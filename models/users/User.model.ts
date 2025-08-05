@@ -272,12 +272,14 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
       "string.email": "البريد الإلكتروني يجب أن يكون صالحاً",
       "any.required": "البريد الإلكتروني مطلوب",
     }),
-    companyName: joi.string().trim().max(100).messages({
+    companyName: joi.string().trim().max(100).allow("").messages({
       "string.empty": "اسم الشركة لا يمكن أن يكون فارغاً",
       "string.max": "اسم الشركة يجب ألا يتجاوز 100 حرف",
+      "any.required": "اسم الشركة مطلوب",
     }),
-    DateOfCompany: joi.date().messages({
+    DateOfCompany: joi.date().allow(null).messages({
       "date.base": "تاريخ الشركة يجب أن يكون تاريخاً صالحاً",
+      "any.required": "تاريخ تأسيس الشركة مطلوب",
     }),
     role: joi
       .string()
@@ -492,12 +494,14 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
       "string.max": "البريد الإلكتروني يجب ألا يتجاوز 100 حرف",
       "string.email": "البريد الإلكتروني يجب أن يكون صالحاً",
     }),
-    companyName: joi.string().trim().max(100).messages({
+    companyName: joi.string().trim().max(100).allow("").messages({
       "string.empty": "اسم الشركة لا يمكن أن يكون فارغاً",
       "string.max": "اسم الشركة يجب ألا يتجاوز 100 حرف",
+      "any.required": "اسم الشركة مطلوب",
     }),
-    DateOfCompany: joi.date().messages({
+    DateOfCompany: joi.date().allow(null).messages({
       "date.base": "تاريخ الشركة يجب أن يكون تاريخاً صالحاً",
+      "any.required": "تاريخ تأسيس الشركة مطلوب",
     }),
     role: joi
       .string()
