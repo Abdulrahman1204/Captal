@@ -123,7 +123,15 @@ class MaterialService {
   static async getMaterials(): Promise<IMaterial[]> {
     const materials = await Material.find().sort({
       createdAt: -1,
+    }).populate({
+      path: 'classification',
+      model: 'ClassFather',
+      select: 'fatherName',
+      populate: {
+        path: "sonNames"
+      }
     });
+
     return materials;
   }
 }
