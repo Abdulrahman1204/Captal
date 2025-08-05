@@ -22,12 +22,10 @@ const MaterialSchema = new Schema(
       ref: "ClassFather",
       required: true,
     },
-    attachments: [
-      {
-        publicId: { type: String, default: null },
-        url: { type: String, default: "" },
-      },
-    ],
+    attachedFile: {
+      publicId: { type: String, default: null },
+      url: { type: String, default: "" },
+    },
   },
   {
     timestamps: true,
