@@ -64,6 +64,7 @@ const UserSchema = new Schema(
     entityType: {
       type: String,
       enum: {
+        values: ["company", "person"],
         message: "نوع الكيان يجب أن يكون: company أو person",
       },
     },
