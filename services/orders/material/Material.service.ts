@@ -55,7 +55,12 @@ class MaterialOrderService {
 
   // ~ Get => /api/captal/orderMaterial ~ Get Orders Material all
   static async getMaterials(): Promise<IMaterial[]> {
-    const materials = await MaterialOrder.find().sort({ createdAt: -1 });
+    const materials = await MaterialOrder.find()
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "materials",
+        model: "Material",
+      });
 
     return materials;
   }
@@ -67,9 +72,14 @@ class MaterialOrderService {
       throw new NotFoundError("المقاول غير موجود");
     }
 
-    const materials = await MaterialOrder.find({ userId: id }).sort({
-      createdAt: -1,
-    });
+    const materials = await MaterialOrder.find({ userId: id })
+      .sort({
+        createdAt: -1,
+      })
+      .populate({
+        path: "materials",
+        model: "Material", 
+      });
     return materials;
   }
 

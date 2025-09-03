@@ -154,7 +154,7 @@ const validaionUpdateStatusMaterial = (
         "shipped",
         "delivered",
         "pending",
-        "pending"
+        "not accepted"
       )
       .required()
       .max(100)
