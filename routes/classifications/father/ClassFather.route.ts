@@ -15,7 +15,7 @@ router
   )
   .get(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     ClassFatherController.getClassFatherCtrl
   );
 
@@ -24,12 +24,12 @@ router
   .route("/:id")
   .put(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     ClassFatherController.updateClassFatherCtrl
   )
   .delete(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     ClassFatherController.deleteClassFatherCtrl
   );
 
