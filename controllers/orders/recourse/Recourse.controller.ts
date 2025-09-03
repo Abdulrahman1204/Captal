@@ -21,20 +21,32 @@ class RecourseOrderController {
   // ~ Get => /api/captal/recourseUserOrder ~ Get Orders Recourse all
   getRecourseCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const recourses = await RecourseOrderService.getRecourse();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
 
-      res.status(200).json({
-        count: recourses.length,
-        data: recourses
-      });
+      const recourses = await RecourseOrderService.getRecourse(
+        search,
+        page,
+        limit
+      );
+
+      res.status(200).json(recourses);
     }
   );
 
   // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Orders Recourse By Recourse`s Id
   getRecourseByRecourseIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
       const recourses = await RecourseOrderService.getRecourseByRecourseId(
-        req.params.id
+        req.params.id,
+        search,
+        page,
+        limit
       );
 
       res.status(200).json(recourses);

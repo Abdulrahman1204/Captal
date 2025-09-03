@@ -23,7 +23,8 @@ class RecourseOrderService {
     }
 
     const advance = parseFloat(recourseData.advance.replace("%", "")) || 0;
-    const uponDelivry = parseFloat(recourseData.uponDelivry.replace("%", "")) || 0;
+    const uponDelivry =
+      parseFloat(recourseData.uponDelivry.replace("%", "")) || 0;
     const afterDelivry =
       parseFloat(recourseData.afterDelivry.replace("%", "")) || 0;
 
@@ -34,7 +35,8 @@ class RecourseOrderService {
     }
 
     const existingUser = await User.findOne({
-      phone: recourseData.recoursePhone, role: 'recourse'
+      phone: recourseData.recoursePhone,
+      role: "recourse",
     });
 
     if (!existingUser) {
@@ -76,22 +78,47 @@ class RecourseOrderService {
   }
 
   // ~ Get => /api/captal/recourseUserOrder ~ Get Orders Recourse all
-  static async getRecourse(): Promise<IRecourse[]> {
-    const recourses = await RecourseOrder.find().sort({ createdAt: -1 });
+  static async getRecourse(
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IRecourse[]> {
+    const filter: any = {};
+    if (search) {
+      filter.recourseName = { $regex: search, $options: "i" };
+    }
+
+    const recourses = await RecourseOrder.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(limit * (page - 1))
+      .limit(limit);
 
     return recourses;
   }
 
   // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Orders Recourse By Recourse`s Id
-  static async getRecourseByRecourseId(id: string): Promise<IRecourse[]> {
+  static async getRecourseByRecourseId(
+    id: string,
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IRecourse[]> {
+    const filter: any = { userId: id };
+    if (search) {
+      filter.recourseName = { $regex: search, $options: "i" };
+    }
+
     const user = await User.findById(id);
     if (!user) {
       throw new NotFoundError("المقاول غير موجود");
     }
 
-    const recourses = await RecourseOrder.find({ userId: id }).sort({
-      createdAt: -1,
-    });
+    const recourses = await RecourseOrder.find(filter)
+      .sort({
+        createdAt: -1,
+      })
+      .skip(limit * (page - 1))
+      .limit(limit);
 
     return recourses;
   }

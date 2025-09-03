@@ -54,22 +54,46 @@ class FinanceService {
   }
 
   // ~ Get > /api/captal/orderFinance ~ Get Orders Finance All
-  static async getFinances(): Promise<IFinance[]> {
-    const finances = await Finance.find().sort({ createdAt: -1 });
+  static async getFinances(
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IFinance[]> {
+    const filter: any = {};
+    if (search) {
+      filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    const finances = await Finance.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(limit * (page - 1))
+      .limit(limit);
 
     return finances;
   }
 
   // ~ Get > /api/captal/orderFinance/contractor/:id ~ Get Orders Finance By Contractor`s Id
-  static async getFinanceContractorId(id: string): Promise<IFinance[]> {
+  static async getFinanceContractorId(
+    id: string,
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IFinance[]> {
+    const filter: any = { userId: id };
+    if (search) {
+      filter.firstName = { $regex: search, $options: "i" };
+    }
+
     const user = await User.findById(id);
     if (!user) {
       throw new NotFoundError("المقاول غير موجود");
     }
 
-    const finances = await Finance.find({ userId: id }).sort({
-      createdAt: -1,
-    });
+    const finances = await Finance.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(limit * (page - 1))
+      .limit(limit);
+
     return finances;
   }
 

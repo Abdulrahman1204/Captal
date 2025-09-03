@@ -86,11 +86,22 @@ class ClassFatherService {
   }
 
   // ~ GET => /api/captal/ClassFather ~ Get All Classification Father
-  static async getClassFather(): Promise<IClassFather[]> {
-    const classesFather = await ClassFather.find().sort({ createdAt: -1 }).populate(
-      "sonNames",
-      "sonName -fatherName"
-    );
+  static async getClassFather(
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IClassFather[]> {
+    const filter: any = {};
+    if (search) {
+      filter.fatherName = { $regex: search, $options: "i" };
+    }
+
+    const classesFather = await ClassFather.find(filter)
+      .sort({ createdAt: -1 })
+      .populate("sonNames", "sonName -fatherName")
+      .skip(limit * (page - 1))
+      .limit(limit);
+
     return classesFather;
   }
 }

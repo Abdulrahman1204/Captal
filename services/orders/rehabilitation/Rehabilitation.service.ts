@@ -53,24 +53,47 @@ class RehabilitationService {
   }
 
   // ~ Get => /api/captal/orderQualification ~ Get Orders Qualification all
-  static async getQualifications(): Promise<IQualification[]> {
-    const qualifications = await Qualification.find().sort({ createdAt: -1 });
+  static async getQualifications(
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IQualification[]> {
+    const filter: any = {};
+    if (search) {
+      filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    const qualifications = await Qualification.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(limit * (page - 1))
+      .limit(limit);
 
     return qualifications;
   }
 
   // ~ Get => /api/captal/orderQualification/contractor/:id ~ Get Orders Qualification By Contractor`s Id
   static async getQualificationsContractorId(
-    id: string
+    id: string,
+    search?: string,
+    page: number = 1,
+    limit: number = 10
   ): Promise<IQualification[]> {
+    const filter: any = { userId: id };
+    if (search) {
+      filter.firstName = { $regex: search, $options: "i" };
+    }
+
     const user = await User.findById(id);
     if (!user) {
       throw new NotFoundError("المقاول غير موجود");
     }
 
-    const qualifications = await Qualification.find({ userId: id }).sort({
-      createdAt: -1,
-    });
+    const qualifications = await Qualification.find(filter)
+      .sort({
+        createdAt: -1,
+      })
+      .skip(limit * (page - 1))
+      .limit(limit);
 
     return qualifications;
   }

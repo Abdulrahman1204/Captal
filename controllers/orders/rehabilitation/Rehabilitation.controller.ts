@@ -21,7 +21,15 @@ class RehabilitationController {
   // ~ Get => /api/captal/orderQualification ~ Get Orders Qualification all
   getQualificationsCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const qualifications = await RehabilitationService.getQualifications();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const qualifications = await RehabilitationService.getQualifications(
+        search,
+        page,
+        limit
+      );
 
       res.status(200).json(qualifications);
     }
@@ -30,9 +38,16 @@ class RehabilitationController {
   // ~ Get => /api/captal/orderQualification/contractor/:id ~ Get Orders Qualification By Contractor`s Id
   getQualificationsContractorIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
       const qualifications =
         await RehabilitationService.getQualificationsContractorId(
-          req.params.id
+          req.params.id,
+          search,
+          page,
+          limit
         );
 
       res.status(200).json(qualifications);

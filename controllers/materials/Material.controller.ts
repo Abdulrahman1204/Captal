@@ -47,7 +47,11 @@ class MaterialController {
   // ~ GET => /api/captal/material ~ Get Material
   getMaterialsCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const materials = await MaterialService.getMaterials();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const materials = await MaterialService.getMaterials(search, page, limit);
 
       res.status(200).json(materials);
     }

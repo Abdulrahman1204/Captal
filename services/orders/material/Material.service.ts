@@ -54,32 +54,56 @@ class MaterialOrderService {
   }
 
   // ~ Get => /api/captal/orderMaterial ~ Get Orders Material all
-  static async getMaterials(): Promise<IMaterial[]> {
-    const materials = await MaterialOrder.find()
+  static async getMaterials(
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IMaterial[]> {
+    const filter: any = {};
+    if (search) {
+      filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    const materials = await MaterialOrder.find(filter)
       .sort({ createdAt: -1 })
       .populate({
         path: "materials",
         model: "Material",
-      });
+      })
+      .skip(limit * (page - 1))
+      .limit(limit);
 
     return materials;
   }
 
   // ~ Get => /api/captal/orderMaterial/contractor/:id ~ Get Orders Material By Contractor`s Id
-  static async getMaterialContractorId(id: string): Promise<IMaterial[]> {
+  static async getMaterialContractorId(
+    id: string,
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ): Promise<IMaterial[]> {
+    const filter: any = { userId: id };
+    if (search) {
+      filter.firstName = { $regex: search, $options: "i" };
+    }
+
     const user = await User.findById(id);
     if (!user) {
       throw new NotFoundError("المقاول غير موجود");
     }
 
-    const materials = await MaterialOrder.find({ userId: id })
+    const materials = await MaterialOrder.find(filter)
       .sort({
         createdAt: -1,
       })
       .populate({
         path: "materials",
-        model: "Material", 
-      });
+        model: "Material",
+      })
+      .skip(limit * (page - 1))
+      .limit(limit)
+      ;
     return materials;
   }
 

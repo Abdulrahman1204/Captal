@@ -38,7 +38,15 @@ class ClassFatherController {
   // ~ GET => /api/captal/ClassFather ~ Get All Classification Father
   getClassFatherCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const classesFather = await ClassFatherService.getClassFather();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const classesFather = await ClassFatherService.getClassFather(
+        search,
+        page,
+        limit
+      );
 
       res.status(200).json(classesFather);
     }

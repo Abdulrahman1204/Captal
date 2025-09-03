@@ -21,7 +21,15 @@ class MaterialOrderController {
   // ~ Get => /api/captal/orderMaterial ~ Get Orders Material all
   getMaterialsCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const materialOrders = await MaterialOrderService.getMaterials();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const materialOrders = await MaterialOrderService.getMaterials(
+        search,
+        page,
+        limit
+      );
 
       res.status(200).json(materialOrders);
     }
@@ -30,8 +38,15 @@ class MaterialOrderController {
   // ~ Get => /api/captal/orderMaterial/contractor/:id ~ Get Orders Material By Contractor`s Id
   getMaterialContractorIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
       const materialOrders = await MaterialOrderService.getMaterialContractorId(
-        req.params.id
+        req.params.id,
+        search,
+        page,
+        limit
       );
 
       res.status(200).json(materialOrders);

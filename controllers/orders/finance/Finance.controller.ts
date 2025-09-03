@@ -18,7 +18,11 @@ class FinanceController {
   // ~ Get > /api/captal/orderFinance ~ Get Orders Finance All
   getFinanceCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const Finances = await FinanceService.getFinances();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const Finances = await FinanceService.getFinances(search, page, limit);
 
       res.status(200).json(Finances);
     }
@@ -27,8 +31,15 @@ class FinanceController {
   // ~ Get > /api/captal/orderFinance/contractor/:id ~ Get Orders Finance By Contractor`s Id
   getFinanceContractorIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
       const Finances = await FinanceService.getFinanceContractorId(
-        req.params.id
+        req.params.id,
+        search,
+        page,
+        limit
       );
 
       res.status(200).json(Finances);
