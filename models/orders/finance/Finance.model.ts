@@ -64,7 +64,7 @@ const FinanceSchema = new Schema(
           "shipped",
           "delivered",
           "pending",
-          "pending",
+          "not accepted",
         ],
         message: "يجب أن يكون احد الحالات المتوفرة",
       },
@@ -148,7 +148,7 @@ const validaionUpdateStatusFinance = (obj: IFinance): joi.ValidationResult => {
         "shipped",
         "delivered",
         "pending",
-        "pending"
+        "not accepted"
       )
       .required()
       .max(100)

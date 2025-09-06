@@ -1,5 +1,6 @@
 import { BadRequestError, NotFoundError } from "../../middlewares/handleErrors";
 import { ClassFather } from "../../models/classifications/father/ClassFather.model";
+import { ClassSon } from "../../models/classifications/son/ClassSon.model";
 import { IMaterial } from "../../models/materials/dtos";
 import {
   Material,
@@ -40,6 +41,13 @@ class MaterialService {
       throw new BadRequestError("التصنيف الرئيسي غير موجود");
     }
 
+    const existingClassificationSon = await ClassSon.findById(
+      materialData.classificationSon
+    );
+    if (!existingClassificationSon) {
+      throw new BadRequestError("التصنيف الفرعي غير موجود");
+    }
+
     const uploadedFile = file
       ? {
           url: file.secure_url || file.path,
@@ -51,6 +59,7 @@ class MaterialService {
       materialName: materialData.materialName,
       serialNumber: materialData.serialNumber,
       classification: materialData.classification,
+      classificationSon: materialData.classificationSon,
       attachedFile: uploadedFile,
     });
 
@@ -77,6 +86,24 @@ class MaterialService {
       throw new NotFoundError("المادة غير موجودة");
     }
 
+    if (materialData.classification) {
+      const existingClassification = await ClassFather.findById(
+        materialData.classification
+      );
+      if (!existingClassification) {
+        throw new BadRequestError("التصنيف الرئيسي غير موجود");
+      }
+    }
+
+    if (materialData.classificationSon) {
+      const existingClassificationSon = await ClassSon.findById(
+        materialData.classificationSon
+      );
+      if (!existingClassificationSon) {
+        throw new BadRequestError("التصنيف الفرعي غير موجود");
+      }
+    }
+
     const uploadedFile = file
       ? {
           url: file.secure_url || file.path,
@@ -94,6 +121,7 @@ class MaterialService {
           materialName: materialData.materialName,
           serialNumber: materialData.serialNumber,
           classification: materialData.classification,
+          classificationSon: materialData.classificationSon,
           attachedFile: uploadedFile, // ✅ Now matches the schema
         },
       },

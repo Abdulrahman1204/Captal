@@ -22,6 +22,11 @@ const MaterialSchema = new Schema(
       ref: "ClassFather",
       required: true,
     },
+    classificationSon: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ClassSon",
+      required: true,
+    },
     attachedFile: {
       publicId: { type: String, default: null },
       url: { type: String, default: "" },
@@ -58,6 +63,10 @@ const validationCreateMaterial = (obj: IMaterial): joi.ValidationResult => {
       "string.empty": "التصنيف الرئيسي لا يمكن أن يكون فارغاً",
       "any.required": "التصنيف الرئيسي مطلوب",
     }),
+    classificationSon: joi.string().trim().required().messages({
+      "string.empty": "التصنيف الفرعي لا يمكن أن يكون فارغاً",
+      "any.required": "التصنيف الفرعي مطلوب",
+    }),
   });
 
   return schema.validate(obj);
@@ -79,6 +88,10 @@ const validationUpdateMaterial = (obj: IMaterial): joi.ValidationResult => {
     classification: joi.string().trim().messages({
       "string.empty": "التصنيف الرئيسي لا يمكن أن يكون فارغاً",
       "any.required": "التصنيف الرئيسي مطلوب",
+    }),
+    classificationSon: joi.string().trim().messages({
+      "string.empty": "التصنيف الفرعي لا يمكن أن يكون فارغاً",
+      "any.required": "التصنيف الفرعي مطلوب",
     }),
   });
 

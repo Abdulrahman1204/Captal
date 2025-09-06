@@ -12,10 +12,10 @@ router
   .post(upload, FinanceController.createFinanceCtrl)
   .get(verifyToken, checkRole(["admin"]), FinanceController.getFinanceCtrl);
 
-// ~ Put > /api/captal/orderFinance/status/:id ~ Update Status Of Finance Order
+// ~ patch > /api/captal/orderFinance/status/:id ~ Update Status Of Finance Order
 router
   .route("/status/:id")
-  .put(
+  .patch(
     verifyToken,
     checkRole(["admin"]),
     FinanceController.updateStatusFinanceCtrl

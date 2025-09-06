@@ -51,6 +51,8 @@ class FinanceController {
     async (req: Request, res: Response): Promise<void> => {
       await FinanceService.updateStatusFinance(req.body, req.params.id);
 
+      console.log(req.body)
+
       res.status(201).json({
         message: "تم تحديث الطلب بنجاح",
       });
