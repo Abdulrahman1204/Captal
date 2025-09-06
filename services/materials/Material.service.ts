@@ -170,9 +170,10 @@ class MaterialService {
         path: "classification",
         model: "ClassFather",
         select: "fatherName",
-        populate: {
-          path: "sonNames",
-        },
+      }).populate({
+        path: "classificationSon",
+        model: "ClassSon",
+        select: "sonName",
       })
       .skip(limit * (page - 1))
       .limit(limit);
