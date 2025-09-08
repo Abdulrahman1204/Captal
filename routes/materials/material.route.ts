@@ -15,20 +15,24 @@ router
     upload,
     MaterialController.createNewMaterialCtrl
   )
-  .get(MaterialController.getMaterialsCtrl);
+  .get(
+    verifyToken,
+    checkRole(["admin", "intering"]),
+    MaterialController.getMaterialsCtrl
+  );
 
 // ~ PUT => /api/captal/material/:id ~ Update Material + // ~ DELETE => /api/captal/material/:id ~ Delete Material
 router
   .route("/:id")
   .put(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     upload,
     MaterialController.updateMaterialCtrl
   )
   .delete(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     MaterialController.deleteMaterialCtrl
   );
 

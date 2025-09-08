@@ -13,15 +13,15 @@ router
     checkRole(["admin", "intering"]),
     ClassSonController.createNewClassSonCtrl
   )
-  .get(verifyToken, checkRole(["admin"]), ClassSonController.getClassSon);
+  .get(verifyToken, checkRole(["admin", "intering"]), ClassSonController.getClassSon);
 
 // ~ PUT => /api/captal/ClassSon/:id ~ Update Classification Son + // ~ DELETE => /api/captal/ClassSon/:id ~ Delete Classification Son
 router
   .route("/:id")
-  .put(verifyToken, checkRole(["admin"]), ClassSonController.updateClassSonCtrl)
+  .put(verifyToken, checkRole(["admin", "intering"]), ClassSonController.updateClassSonCtrl)
   .delete(
     verifyToken,
-    checkRole(["admin"]),
+    checkRole(["admin", "intering"]),
     ClassSonController.deleteClassSonCtrl
   );
 
