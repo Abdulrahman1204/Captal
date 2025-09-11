@@ -87,10 +87,21 @@ class ClassSonService {
   }
 
   // ~ GET => /api/captal/ClassSon ~ Get All Classification Son
-  static async getClassSon() {
+    static async getClassSon(
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ) {
+
+    const filter: any = {};
+    if (search) {
+      filter.sonName = { $regex: search, $options: "i" };
+    }
     const classesSon = await ClassSon.find()
       .populate("fatherName")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(limit * (page - 1))
+      .limit(limit);;
 
     const total = await ClassSon.countDocuments();
 
