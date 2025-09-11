@@ -82,7 +82,7 @@ class RecourseOrderService {
     search?: string,
     page: number = 1,
     limit: number = 10
-  ): Promise<IRecourse[]> {
+  ) {
     const filter: any = {};
     if (search) {
       filter.recourseName = { $regex: search, $options: "i" };
@@ -93,7 +93,13 @@ class RecourseOrderService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    return recourses;
+    const total = await RecourseOrder.countDocuments();
+
+    return {
+      recourses,
+      total,
+      filterNum: recourses.length,
+    };
   }
 
   // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Orders Recourse By Recourse`s Id

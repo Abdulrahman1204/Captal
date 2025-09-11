@@ -87,12 +87,18 @@ class ClassSonService {
   }
 
   // ~ GET => /api/captal/ClassSon ~ Get All Classification Son
-  static async getClassSon(): Promise<IClassSon[]> {
+  static async getClassSon() {
     const classesSon = await ClassSon.find()
-      .populate("fatherName") 
+      .populate("fatherName")
       .sort({ createdAt: -1 });
 
-    return classesSon;
+    const total = await ClassSon.countDocuments();
+
+    return {
+      classesSon,
+      total,
+      filterNum: classesSon.length,
+    };
   }
 }
 

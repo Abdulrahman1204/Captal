@@ -156,7 +156,7 @@ class MaterialService {
     search?: string,
     page: number = 1,
     limit: number = 10
-  ): Promise<IMaterial[]> {
+  ) {
     const filter: any = {};
     if (search) {
       filter.materialName = { $regex: search, $options: "i" };
@@ -170,7 +170,8 @@ class MaterialService {
         path: "classification",
         model: "ClassFather",
         select: "fatherName",
-      }).populate({
+      })
+      .populate({
         path: "classificationSon",
         model: "ClassSon",
         select: "sonName",
@@ -178,7 +179,13 @@ class MaterialService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    return materials;
+    const total = Material.countDocuments();
+
+    return {
+      materials,
+      total,
+      filterNum: materials.length,
+    };
   }
 }
 

@@ -57,7 +57,7 @@ class RehabilitationService {
     search?: string,
     page: number = 1,
     limit: number = 10
-  ): Promise<IQualification[]> {
+  ) {
     const filter: any = {};
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
@@ -68,7 +68,13 @@ class RehabilitationService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    return qualifications;
+    const total = await Qualification.countDocuments();
+
+    return {
+      qualifications,
+      total,
+      filterNum: qualifications.length,
+    };
   }
 
   // ~ Get => /api/captal/orderQualification/contractor/:id ~ Get Orders Qualification By Contractor`s Id

@@ -90,7 +90,7 @@ class ClassFatherService {
     search?: string,
     page: number = 1,
     limit: number = 10
-  ): Promise<IClassFather[]> {
+  ) {
     const filter: any = {};
     if (search) {
       filter.fatherName = { $regex: search, $options: "i" };
@@ -102,7 +102,13 @@ class ClassFatherService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    return classesFather;
+    const total = await ClassFather.countDocuments()
+
+    return {
+      classesFather,
+      total,
+      filterNum: classesFather.length,
+    };
   }
 }
 

@@ -58,7 +58,7 @@ class MaterialOrderService {
     search?: string,
     page: number = 1,
     limit: number = 10
-  ): Promise<IMaterial[]> {
+  ) {
     const filter: any = {};
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
@@ -73,7 +73,13 @@ class MaterialOrderService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    return materials;
+    const total = await MaterialOrder.countDocuments();
+
+    return {
+      materials,
+      total,
+      filterNum: materials.length,
+    };
   }
 
   // ~ Get => /api/captal/orderMaterial/contractor/:id ~ Get Orders Material By Contractor`s Id
@@ -102,8 +108,7 @@ class MaterialOrderService {
         model: "Material",
       })
       .skip(limit * (page - 1))
-      .limit(limit)
-      ;
+      .limit(limit);
     return materials;
   }
 

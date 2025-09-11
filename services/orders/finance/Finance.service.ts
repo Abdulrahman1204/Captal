@@ -58,7 +58,7 @@ class FinanceService {
     search?: string,
     page: number = 1,
     limit: number = 10
-  ): Promise<IFinance[]> {
+  ) {
     const filter: any = {};
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
@@ -69,7 +69,13 @@ class FinanceService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    return finances;
+    const total = await Finance.countDocuments();
+
+    return {
+      finances,
+      total,
+      filterNum: finances.length,
+    };
   }
 
   // ~ Get > /api/captal/orderFinance/contractor/:id ~ Get Orders Finance By Contractor`s Id
