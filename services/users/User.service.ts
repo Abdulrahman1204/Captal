@@ -212,9 +212,11 @@ class UserService {
   ) {
     const filter: any = {};
 
-    // If role is provided, add it to the query
     if (role) {
       filter.role = role;
+    }
+
+    if (search) {
       filter.firstName = { $regex: search, $options: "i" };
     }
 
@@ -223,7 +225,7 @@ class UserService {
       .skip(limit * (page - 1))
       .limit(limit);
 
-    const total = await User.countDocuments();
+    const total = await User.countDocuments(filter); // Use the same filter for accurate count
 
     return {
       users,
