@@ -94,8 +94,8 @@ const UserSchema = new Schema(
     typeOfTransaction: {
       type: String,
       enum: {
-        message:
-          "نوع المعاملة يجب أن يكون: cash, credit, installments, bankTransfer",
+        values: ["cash", "deferred"],
+        message: "نوع التعامل يجب أن يكون: cash أو deferred",
       },
     },
     exemptionOption: {
@@ -329,11 +329,10 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
       }),
     typeOfTransaction: joi
       .string()
-      .valid("cash", "credit", "installments", "bankTransfer")
+      .valid("cash", "deferred")
       .allow("")
       .messages({
-        "any.only":
-          "نوع المعاملة يجب أن يكون: cash, credit, installments, bankTransfer",
+        "any.only": "نوع المعاملة يجب أن يكون: cash, deferred",
       }),
     exemptionOption: joi.string().trim().max(100).allow("").messages({
       "string.max": "خيار الإعفاء لا يجب أن يتجاوز 100 حرف",
@@ -549,11 +548,10 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
       }),
     typeOfTransaction: joi
       .string()
-      .valid("cash", "credit", "installments", "bankTransfer")
+      .valid("cash", "deferred")
       .allow("")
       .messages({
-        "any.only":
-          "نوع المعاملة يجب أن يكون: cash, credit, installments, bankTransfer",
+        "any.only": "نوع المعاملة يجب أن يكون: cash, deferred",
       }),
     exemptionOption: joi.string().trim().max(100).allow("").messages({
       "string.max": "خيار الإعفاء لا يجب أن يتجاوز 100 حرف",

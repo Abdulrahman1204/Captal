@@ -22,7 +22,7 @@ export interface IUser extends Document {
   taxNumber?: string;
   registrationDate?: Date;
   resourceStatus?: Date;
-  typeOfTransaction?: Date;
+  typeOfTransaction?: "cash" | "deferred";
   exemptionOption?: string;
   internationalResource?: boolean;
   freezeTheAccount?: boolean;
