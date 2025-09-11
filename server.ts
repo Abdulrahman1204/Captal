@@ -53,7 +53,7 @@ app.use(
 );
 
 // Routes
-app.get("/", (req: Request, res: Response) => {
+app.get("/test", (req: Request, res: Response) => {
   res.send("API is running in Captal");
 });
 app.get("/health", (req: Request, res: Response) => {
