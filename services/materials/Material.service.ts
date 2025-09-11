@@ -153,41 +153,47 @@ class MaterialService {
 
   // ~ GET => /api/captal/material ~ Get Material
     static async getMaterials(
-    search?: string,
-    page: number = 1,
-    limit: number = 10
-  ) {
+  search?: string,
+  page: number = 1,
+  limit: number = 10
+) {
+  try {
     const filter: any = {};
     if (search) {
       filter.materialName = { $regex: search, $options: "i" };
     }
 
-    const materials = await Material.find(filter)
-      .sort({
-        createdAt: -1,
-      })
-      .populate({
-        path: "classification",
-        model: "ClassFather",
-        select: "fatherName",
-      })
-      .populate({
-        path: "classificationSon",
-        model: "ClassSon",
-        select: "sonName",
-      })
-      .skip(limit * (page - 1))
-      .limit(limit)
-      .lean();
-
-    const total = Material.countDocuments();
+    // Execute both queries in parallel for better performance
+    const [materials, total] = await Promise.all([
+      Material.find(filter)
+        .sort({ createdAt: -1 })
+        .populate({
+          path: "classification",
+          model: "ClassFather",
+          select: "fatherName",
+        })
+        .populate({
+          path: "classificationSon",
+          model: "ClassSon",
+          select: "sonName",
+        })
+        .skip(limit * (page - 1))
+        .limit(limit)
+        .lean(), // Convert to plain JavaScript objects
+      
+      Material.countDocuments(filter) // Use the same filter for accurate count
+    ]);
 
     return {
-      materials,
+      materials, // Now plain objects without circular references
       total,
       filterNum: materials.length,
     };
+  } catch (error) {
+    console.error("Error in getMaterials:", error);
+    throw new Error("Failed to fetch materials");
   }
+}
 }
 
 export { MaterialService };
