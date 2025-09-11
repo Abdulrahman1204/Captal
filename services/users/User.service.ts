@@ -204,16 +204,32 @@ class UserService {
   }
 
   // ~ Get => /api/captal/user ~ GET Users
-  static async getUsers(role?: string): Promise<IUser[]> {
-    const query: any = {};
+  static async getUsers(
+    role?: string,
+    search?: string,
+    page: number = 1,
+    limit: number = 10
+  ) {
+    const filter: any = {};
 
     // If role is provided, add it to the query
     if (role) {
-      query.role = role;
+      filter.role = role;
+      filter.firstName = { $regex: search, $options: "i" };
     }
 
-    const users = await User.find(query).sort({ createdAt: -1 });
-    return users;
+    const users = await User.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(limit * (page - 1))
+      .limit(limit);
+
+    const total = await User.countDocuments();
+
+    return {
+      users,
+      total,
+      filterNum: users.length,
+    };
   }
 
   // ~ Get => /api/captal/user/:id ~ GET Profile User
