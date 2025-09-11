@@ -13,7 +13,7 @@ router
     checkRole(["admin", "intering"]),
     UserController.createNewUserCtrl
   )
-  .get(verifyToken, checkRole(["admin"]), UserController.getUsersCtrl);
+  .get(verifyToken, checkRole(["admin", "intering"]), UserController.getUsersCtrl);
 
 // ~ PUT => /api/captal/user/:id ~ Update User + // ~ DELETE => /api/captal/user/:id ~ Delete User
 router
