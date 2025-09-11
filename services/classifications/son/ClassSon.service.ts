@@ -97,7 +97,7 @@ class ClassSonService {
     if (search) {
       filter.sonName = { $regex: search, $options: "i" };
     }
-    const classesSon = await ClassSon.find()
+    const classesSon = await ClassSon.find(filter)
       .populate("fatherName")
       .sort({ createdAt: -1 })
       .skip(limit * (page - 1))
