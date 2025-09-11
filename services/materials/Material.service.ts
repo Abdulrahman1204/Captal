@@ -152,7 +152,7 @@ class MaterialService {
   }
 
   // ~ GET => /api/captal/material ~ Get Material
-  static async getMaterials(
+    static async getMaterials(
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -177,7 +177,8 @@ class MaterialService {
         select: "sonName",
       })
       .skip(limit * (page - 1))
-      .limit(limit);
+      .limit(limit)
+      .lean();
 
     const total = Material.countDocuments();
 
