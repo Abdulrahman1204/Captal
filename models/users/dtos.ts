@@ -26,7 +26,7 @@ export interface IUser extends Document {
   exemptionOption?: string;
   internationalResource?: boolean;
   freezeTheAccount?: boolean;
-  currency?: string;
+  currency?: "SAR";
   bankAccountNumber?: string;
   bankName?: string;
   taxDiscountRate?: number;

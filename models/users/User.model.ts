@@ -112,9 +112,7 @@ const UserSchema = new Schema(
     },
     currency: {
       type: String,
-      enum: {
-        message: "العملة يجب أن تكون: SAR, USD, EUR, AED",
-      },
+      default: "SAR"
     },
     bankAccountNumber: {
       type: String,
@@ -345,11 +343,7 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
     }),
     currency: joi
       .string()
-      .valid("SAR", "USD", "EUR", "AED")
-      .allow("")
-      .messages({
-        "any.only": "العملة يجب أن تكون: SAR, USD, EUR, AED",
-      }),
+      .default("SAR"),
     bankAccountNumber: joi.string().trim().allow("").messages({
       "string.pattern.base": "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
     }),
@@ -564,11 +558,7 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
     }),
     currency: joi
       .string()
-      .valid("SAR", "USD", "EUR", "AED")
-      .allow("")
-      .messages({
-        "any.only": "العملة يجب أن تكون: SAR, USD, EUR, AED",
-      }),
+      .default('SAR'),
     bankAccountNumber: joi.string().trim().allow("").messages({
       "string.pattern.base": "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
     }),
