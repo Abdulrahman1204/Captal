@@ -36,9 +36,13 @@ class ClassSonController {
   );
 
   // ~ GET => /api/captal/ClassSon ~ Get All Classification Son
-  getClassSon = asyncHandler(
+ getClassSon = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const classesSon = await ClassSonService.getClassSon();
+      const search = req.query.search as string;
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const classesSon = await ClassSonService.getClassSon(search, page, limit);
 
       res.status(200).json(classesSon);
     }
