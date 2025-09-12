@@ -21,7 +21,7 @@ export interface IUser extends Document {
   commercialRegistrationNumber?: string;
   taxNumber?: string;
   registrationDate?: Date;
-  resourceStatus?: Date;
+  resourceStatus?: "active" | "suspended";
   typeOfTransaction?: "cash" | "deferred";
   exemptionOption?: string;
   internationalResource?: boolean;
