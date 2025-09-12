@@ -87,8 +87,8 @@ const UserSchema = new Schema(
     resourceStatus: {
       type: String,
       enum: {
-        message:
-          "حالة المورد يجب أن تكون: active, inactive, suspended, pending",
+        values: ["active", "suspended"],
+        message: "حالة المورد يجب أن تكون: active, suspended",
       },
     },
     typeOfTransaction: {
@@ -112,7 +112,7 @@ const UserSchema = new Schema(
     },
     currency: {
       type: String,
-      default: "SAR"
+      default: "SAR",
     },
     bankAccountNumber: {
       type: String,
@@ -319,11 +319,10 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
     }),
     resourceStatus: joi
       .string()
-      .valid("active", "inactive", "suspended", "pending")
+      .valid("active", "suspended")
       .allow("")
       .messages({
-        "any.only":
-          "حالة المورد يجب أن تكون: active, inactive, suspended, pending",
+        "any.only": "حالة المورد يجب أن تكون: active, suspended",
       }),
     typeOfTransaction: joi
       .string()
@@ -341,9 +340,7 @@ const validationCreateUser = (obj: IUser): joi.ValidationResult => {
     freezeTheAccount: joi.boolean().messages({
       "boolean.base": "تجميد الحساب يجب أن يكون true أو false",
     }),
-    currency: joi
-      .string()
-      .default("SAR"),
+    currency: joi.string().default("SAR"),
     bankAccountNumber: joi.string().trim().allow("").messages({
       "string.pattern.base": "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
     }),
@@ -534,11 +531,10 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
     }),
     resourceStatus: joi
       .string()
-      .valid("active", "inactive", "suspended", "pending")
+      .valid("active", "suspended")
       .allow("")
       .messages({
-        "any.only":
-          "حالة المورد يجب أن تكون: active, inactive, suspended, pending",
+        "any.only": "حالة المورد يجب أن تكون: active, suspended",
       }),
     typeOfTransaction: joi
       .string()
@@ -556,9 +552,7 @@ const validationUpdateUser = (obj: IUser): joi.ValidationResult => {
     freezeTheAccount: joi.boolean().messages({
       "boolean.base": "تجميد الحساب يجب أن يكون true أو false",
     }),
-    currency: joi
-      .string()
-      .default('SAR'),
+    currency: joi.string().default("SAR"),
     bankAccountNumber: joi.string().trim().allow("").messages({
       "string.pattern.base": "رقم الحساب البنكي يجب أن يكون بين 10-24 حرف/رقم",
     }),
