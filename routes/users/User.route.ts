@@ -18,7 +18,7 @@ router
 // ~ PUT => /api/captal/user/:id ~ Update User + // ~ DELETE => /api/captal/user/:id ~ Delete User
 router
   .route("/:id")
-  .get(verifyToken, checkRole(["admin"]), UserController.getProfileUserCtrl)
+  .get(verifyToken, UserController.getProfileUserCtrl)
   .put(verifyToken, checkRole(["admin"]), UserController.updateUserCtrl)
   .delete(verifyToken, checkRole(["admin"]), UserController.deleteUserCtrl);
 
