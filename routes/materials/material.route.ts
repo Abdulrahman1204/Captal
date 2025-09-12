@@ -17,7 +17,6 @@ router
   )
   .get(
     verifyToken,
-    checkRole(["admin", "intering"]),
     MaterialController.getMaterialsCtrl
   );
 
