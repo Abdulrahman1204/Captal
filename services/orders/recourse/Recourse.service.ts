@@ -187,7 +187,7 @@ class RecourseOrderService {
     const updatedRecourse = await RecourseOrder.findByIdAndUpdate(
       id,
       {
-        $set: { attachedFile: uploadedFile },
+        $set: { billFile: uploadedFile },
       },
       { new: true, runValidators: true }
     );
