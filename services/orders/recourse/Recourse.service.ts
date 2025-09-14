@@ -89,6 +89,7 @@ class RecourseOrderService {
     }
 
     const recourses = await RecourseOrder.find(filter)
+      .populate("materials")
       .sort({ createdAt: -1 })
       .skip(limit * (page - 1))
       .limit(limit);
@@ -120,6 +121,7 @@ class RecourseOrderService {
     }
 
     const recourses = await RecourseOrder.find(filter)
+      .populate("materials")
       .sort({
         createdAt: -1,
       })
@@ -154,6 +156,47 @@ class RecourseOrderService {
     );
 
     return recourse;
+  }
+
+  // ~ Put => /api/captal/recourseUserOrder/bill/:id ~ Update Attached File
+  static async updateAttachedFile(
+    id: string,
+    file: ICloudinaryFile
+  ): Promise<IRecourse> {
+    // Validate the file object
+    if (
+      !file ||
+      (!file.secure_url && !file.path) ||
+      (!file.public_id && !file.filename)
+    ) {
+      throw new BadRequestError("File information is incomplete");
+    }
+
+    const recourse = await RecourseOrder.findById(id);
+    if (!recourse) {
+      throw new NotFoundError("الطلب غير موجود");
+    }
+
+    // Prepare file data
+    const uploadedFile = {
+      url: file.secure_url || file.path,
+      publicId: file.public_id || file.filename,
+    };
+
+    // Update the Recourse with new file
+    const updatedRecourse = await RecourseOrder.findByIdAndUpdate(
+      id,
+      {
+        $set: { attachedFile: uploadedFile },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedRecourse) {
+      throw new NotFoundError("فشل في تحديث الملف");
+    }
+
+    return updatedRecourse;
   }
 }
 

@@ -157,6 +157,7 @@ const validaionUpdateStatusQualification = (
   return schema.validate(obj);
 };
 
+
 export {
   Qualification,
   validaionCreateQualification,

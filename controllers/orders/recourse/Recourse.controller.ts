@@ -63,6 +63,27 @@ class RecourseOrderController {
       });
     }
   );
+
+  // ~ Put => /api/captal/recourseUserOrder/file/:id ~ Update Attached File
+  updateAttachedFileCtrl = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { id } = req.params;
+
+      if (!req.file) {
+        res.status(400).json({ message: "لم يتم تحميل أي ملف" });
+        return;
+      }
+
+      const updatedRecourse = await RecourseOrderService.updateAttachedFile(
+        id,
+        req.file as ICloudinaryFile
+      );
+
+      res.status(200).json({
+        message: "تم تحديث الملف المرفق بنجاح",
+      });
+    }
+  );
 }
 
 export default new RecourseOrderController();

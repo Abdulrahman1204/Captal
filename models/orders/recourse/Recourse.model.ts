@@ -218,8 +218,23 @@ const validaionUpdateStatusRecourse = (
   return schema.validate(obj);
 };
 
+
+const validationUpdateAttachedFile = (
+  obj: Partial<IRecourse>
+): joi.ValidationResult => {
+  const schema = joi.object({
+    attachedFile: joi.object({
+      publicId: joi.string().allow(null, ""),
+      url: joi.string().uri().allow("")
+    }).optional()
+  });
+
+  return schema.validate(obj);
+};
+
 export {
   RecourseOrder,
   validaionUpdateStatusRecourse,
   validationCreateRecourseOrder,
+  validationUpdateAttachedFile
 };

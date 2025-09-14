@@ -67,6 +67,8 @@ class RehabilitationController {
       });
     }
   );
+
+
 }
 
 export default new RehabilitationController();

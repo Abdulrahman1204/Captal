@@ -30,6 +30,16 @@ router
     RecourseController.updateStatusRecourseCtrl
   );
 
+// ~ Put => /api/captal/recourseUserOrder/bill/:id ~ Update Attached File
+router
+  .route("/bill/:id")
+  .put(
+    verifyToken,
+    checkRole(["admin"]),
+    upload,
+    RecourseController.updateAttachedFileCtrl
+  );
+
 // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Orders Recourse By Recourse`s Id
 // router.route("/:id").get(RecourseController.getRecourseByRecourseIdCtrl);
 

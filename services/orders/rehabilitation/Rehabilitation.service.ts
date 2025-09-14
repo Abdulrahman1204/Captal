@@ -129,6 +129,8 @@ class RehabilitationService {
 
     return qualification;
   }
+
+  
 }
 
 export { RehabilitationService };
