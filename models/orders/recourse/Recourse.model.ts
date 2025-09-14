@@ -51,7 +51,7 @@ const RecourseSchema = new Schema(
     materials: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Matrial",
+        ref: "Material",
         default: null,
       },
     ],
