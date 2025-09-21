@@ -26,7 +26,7 @@ router
   .route("/:id/status")
   .patch(
     verifyToken,
-    checkRole(["recourse"]),
+    checkRole(["recourse", "admin"]),
     RecourseController.updateStatusRecourseCtrl
   );
 
