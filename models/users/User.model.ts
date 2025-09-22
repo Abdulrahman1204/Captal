@@ -51,7 +51,6 @@ const UserSchema = new Schema(
         message: "الدور يجب أن يكون أحد: admin, contractor, recourse, intering",
       },
     },
-
     // معلومات المورد
     supplierNumber: {
       type: String,

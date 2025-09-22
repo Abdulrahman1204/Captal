@@ -21,7 +21,7 @@ router
     RecourseController.getRecourseCtrl
   );
 
-// ~ Put => /api/captal/recourseUserOrder/status/:id ~ Update Order Recourse
+// ~ Put => /api/captal/recourseUserOrder/:id/status ~ Update Order Recourse
 router
   .route("/:id/status")
   .patch(
