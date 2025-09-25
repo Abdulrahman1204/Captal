@@ -10,6 +10,7 @@ import {
 } from "../../../models/orders/recourse/Recourse.model";
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
+import { NotificationService } from "../../notification/Notification.service";
 
 class RecourseOrderService {
   // ~ Post => /api/captal/recourseUserOrder ~ Create New Order Recourse
@@ -74,11 +75,16 @@ class RecourseOrderService {
       userId: userId,
     });
 
+    const text = "تم إنشاء طلب للمورد جديد";
+
+    await NotificationService.createNotification(text);
+
     return newRecourse;
   }
 
   // ~ Get => /api/captal/recourseUserOrder ~ Get Orders Recourse all
   static async getRecourse(
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -86,6 +92,10 @@ class RecourseOrderService {
     const filter: any = {};
     if (search) {
       filter.recourseName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const recourses = await RecourseOrder.find(filter)
@@ -106,6 +116,7 @@ class RecourseOrderService {
   // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Orders Recourse By Recourse`s Id
   static async getRecourseByRecourseId(
     id: string,
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -113,6 +124,10 @@ class RecourseOrderService {
     const filter: any = { userId: id };
     if (search) {
       filter.recourseName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const user = await User.findById(id);

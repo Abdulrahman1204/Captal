@@ -1,4 +1,3 @@
-// src/errors/errors.ts
 import { BaseError } from "./baseErrors";
 
 export class NotFoundError extends BaseError {

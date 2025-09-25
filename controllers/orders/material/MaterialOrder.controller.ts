@@ -22,10 +22,12 @@ class MaterialOrderController {
   getMaterialsCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
       const materialOrders = await MaterialOrderService.getMaterials(
+        status,
         search,
         page,
         limit
@@ -39,11 +41,14 @@ class MaterialOrderController {
   getMaterialContractorIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
       const materialOrders = await MaterialOrderService.getMaterialContractorId(
         req.params.id,
+        status,
         search,
         page,
         limit

@@ -10,6 +10,7 @@ import {
 } from "../../../models/orders/material/Material.model";
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
+import { NotificationService } from "../../notification/Notification.service";
 
 class MaterialOrderService {
   // ~ Post => /api/captal/orderMaterial ~ Create New Order Material
@@ -50,11 +51,16 @@ class MaterialOrderService {
       userId,
     });
 
+    const text = "تم إنشاء طلب للمواد جديد";
+
+    await NotificationService.createNotification(text);
+
     return newMaterial;
   }
 
   // ~ Get => /api/captal/orderMaterial ~ Get Orders Material all
   static async getMaterials(
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -62,6 +68,10 @@ class MaterialOrderService {
     const filter: any = {};
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const materials = await MaterialOrder.find(filter)
@@ -85,6 +95,7 @@ class MaterialOrderService {
   // ~ Get => /api/captal/orderMaterial/contractor/:id ~ Get Orders Material By Contractor`s Id
   static async getMaterialContractorId(
     id: string,
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -92,6 +103,10 @@ class MaterialOrderService {
     const filter: any = { userId: id };
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const user = await User.findById(id);

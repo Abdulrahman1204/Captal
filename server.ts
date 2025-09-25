@@ -17,6 +17,9 @@ import routeFinanceOrder from "./routes/orders/finance/Finance.route";
 import routeMaterialOrder from "./routes/orders/material/Material.route";
 import routeRehabilitationOrder from "./routes/orders/rehabilitation/Rehabilitation.route";
 import routeRecourseOrder from "./routes/orders/recourse/Recourse.route";
+import routeNotification from "./routes/notification/Notification.route";
+
+import orders from './routes/Orders.route'
 
 // .env
 dotenv.config();
@@ -72,6 +75,9 @@ app.use("/api/captal/orderFinance", routeFinanceOrder);
 app.use("/api/captal/orderMaterial", routeMaterialOrder);
 app.use("/api/captal/orderQualification", routeRehabilitationOrder);
 app.use("/api/captal/recourseUserOrder", routeRecourseOrder);
+app.use("/api/captal/notification", routeNotification);
+app.use("/api/captal/orders", orders);
+
 
 // Error Handler Middleware
 app.use(notFound);

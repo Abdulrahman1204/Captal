@@ -22,10 +22,14 @@ class RecourseOrderController {
   getRecourseCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
+      console.log(status)
+
       const recourses = await RecourseOrderService.getRecourse(
+        status,
         search,
         page,
         limit
@@ -39,11 +43,14 @@ class RecourseOrderController {
   getRecourseByRecourseIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
       const recourses = await RecourseOrderService.getRecourseByRecourseId(
         req.params.id,
+        status,
         search,
         page,
         limit

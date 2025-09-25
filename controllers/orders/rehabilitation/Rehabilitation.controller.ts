@@ -22,10 +22,13 @@ class RehabilitationController {
   getQualificationsCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
       const qualifications = await RehabilitationService.getQualifications(
+        status,
         search,
         page,
         limit
@@ -39,12 +42,15 @@ class RehabilitationController {
   getQualificationsContractorIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
       const qualifications =
         await RehabilitationService.getQualificationsContractorId(
           req.params.id,
+          status,
           search,
           page,
           limit
@@ -67,8 +73,6 @@ class RehabilitationController {
       });
     }
   );
-
-
 }
 
 export default new RehabilitationController();

@@ -19,10 +19,11 @@ class FinanceController {
   getFinanceCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
-      const Finances = await FinanceService.getFinances(search, page, limit);
+      const Finances = await FinanceService.getFinances(status, search, page, limit);
 
       res.status(200).json(Finances);
     }
@@ -32,11 +33,14 @@ class FinanceController {
   getFinanceContractorIdCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       const search = req.query.search as string;
+      const status = req.query.status as string;
+
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
       const Finances = await FinanceService.getFinanceContractorId(
         req.params.id,
+        status,
         search,
         page,
         limit

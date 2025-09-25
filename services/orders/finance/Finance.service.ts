@@ -10,6 +10,7 @@ import {
 } from "../../../models/orders/finance/Finance.model";
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
+import { NotificationService } from "../../notification/Notification.service";
 
 class FinanceService {
   // ~ Post => /api/captal/orderFinance ~ Create New Order Finance
@@ -50,11 +51,16 @@ class FinanceService {
       userId,
     });
 
+    const text = "تم إنشاء طلب بالأجل جديد";
+
+    await NotificationService.createNotification(text);
+
     return newFinance;
   }
 
   // ~ Get > /api/captal/orderFinance ~ Get Orders Finance All
   static async getFinances(
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -62,6 +68,10 @@ class FinanceService {
     const filter: any = {};
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const finances = await Finance.find(filter)
@@ -81,6 +91,7 @@ class FinanceService {
   // ~ Get > /api/captal/orderFinance/contractor/:id ~ Get Orders Finance By Contractor`s Id
   static async getFinanceContractorId(
     id: string,
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -88,6 +99,10 @@ class FinanceService {
     const filter: any = { userId: id };
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const user = await User.findById(id);

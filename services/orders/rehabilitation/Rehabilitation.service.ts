@@ -10,6 +10,7 @@ import {
 } from "../../../models/orders/rehabilitation/Rehabilitation.Model";
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
+import { NotificationService } from "../../notification/Notification.service";
 
 class RehabilitationService {
   // ~ Post => /api/captal/orderQualification ~ Create New Order Qualification
@@ -49,11 +50,16 @@ class RehabilitationService {
       userId,
     });
 
+    const text = "تم إنشاء طلب بالتأهيل جديد";
+
+    await NotificationService.createNotification(text);
+
     return newQualification;
   }
 
   // ~ Get => /api/captal/orderQualification ~ Get Orders Qualification all
   static async getQualifications(
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -61,6 +67,10 @@ class RehabilitationService {
     const filter: any = {};
     if (search) {
       filter.firstName = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      filter.statusOrder = status;
     }
 
     const qualifications = await Qualification.find(filter)
@@ -80,6 +90,7 @@ class RehabilitationService {
   // ~ Get => /api/captal/orderQualification/contractor/:id ~ Get Orders Qualification By Contractor`s Id
   static async getQualificationsContractorId(
     id: string,
+    status?: string,
     search?: string,
     page: number = 1,
     limit: number = 10
@@ -89,6 +100,9 @@ class RehabilitationService {
       filter.firstName = { $regex: search, $options: "i" };
     }
 
+    if (status) {
+      filter.statusOrder = status;
+    }
     const user = await User.findById(id);
     if (!user) {
       throw new NotFoundError("المقاول غير موجود");
@@ -129,8 +143,6 @@ class RehabilitationService {
 
     return qualification;
   }
-
-  
 }
 
 export { RehabilitationService };
