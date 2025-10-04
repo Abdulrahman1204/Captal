@@ -9,4 +9,10 @@ router
   .route("/")
   .get(verifyToken, checkRole(["admin"]), OrdersController.getTheCountOfOrder);
 
+router.route("/chart/weekly").get(OrdersController.getWeeklyOrdersChart);
+
+router
+  .route("/chart/visits")
+  .get(OrdersController.getVisitsChart);
+
 export default router;
