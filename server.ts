@@ -85,6 +85,6 @@ app.use(notFound);
 app.use(errorHandler);
 
 //Running The Server
-const PORT: number = parseInt(process.env.PORT || "8000");
+const PORT: number = parseInt(process.env.PORT || "2000");
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

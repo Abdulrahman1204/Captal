@@ -6,10 +6,6 @@ class NotificationController {
   // ~ GET => /api/univers/notifications ~ Get All Notifications
   getAllNotifications = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 20;
-      const search = req.query.search as string;
-
       const result = await NotificationService.getAllNotifications();
       res.status(200).json(result);
     }
@@ -24,6 +20,14 @@ class NotificationController {
       res.status(200).json(result);
     }
   );
+
+  // ~ PUT => /api/univers/notifications/show ~ Show All Notifications
+  showAllNotifications = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const result = await NotificationService.showAllNotifications();
+      res.status(200).json(result);
+    }
+  )
 }
 
 export const notificationController = new NotificationController();

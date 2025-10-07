@@ -9,7 +9,7 @@ import { BadRequestError, NotFoundError } from "../../middlewares/handleErrors";
 class NotificationService {
   // ~ Post => /api/univers/notifications ~ Create New Notification
   static async createNotification(text: string) {
-    const notification = await Notification.create({text});
+    const notification = await Notification.create({ text });
 
     return {
       message: "تم إنشاء الإشعار بنجاح",
@@ -35,8 +35,12 @@ class NotificationService {
   static async getAllNotifications() {
     const notifications = await Notification.find().sort({ createdAt: -1 });
 
+    // Count all notifications
+    const count = (await Notification.find({ show: true })).length;
+
     return {
       notifications,
+      count,
     };
   }
 
@@ -52,6 +56,18 @@ class NotificationService {
     }
 
     return { message: "تم حذف الإشعار بنجاح" };
+  }
+
+  // ~ Put => /api/univers/notifications/show ~ Show All Notifications
+  static async showAllNotifications() {
+    const result = await Notification.updateMany(
+      { show: true }, // تحديث فقط الإشعارات غير الظاهرة
+      { $set: { show: false } }
+    );
+
+    return {
+      message: "تم جعل جميع الإشعارات ظاهرة بنجاح",
+    };
   }
 }
 

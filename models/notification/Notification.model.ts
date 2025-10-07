@@ -11,6 +11,10 @@ const NotificationSchema = new Schema<INotification>(
       trim: true,
       maxlength: [1000, "نص الإشعار يجب ألا يتجاوز 1000 حرف"],
     },
+    show: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,
@@ -47,6 +51,9 @@ const validateUpdateNotification = (
     text: joi.string().max(1000).messages({
       "string.empty": "نص الإشعار مطلوب",
       "string.max": "نص الإشعار يجب ألا يتجاوز 1000 حرف",
+    }),
+    show: joi.boolean().messages({
+      "boolean.base": "حقل العرض يجب أن يكون صحيح أو خطأ",
     }),
   });
 

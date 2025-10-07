@@ -3,15 +3,13 @@ import { notificationController } from "../../controllers/notification/Notificat
 import verifyToken from "../../middlewares/verifyToken";
 import checkRole from "../../middlewares/checkRole";
 
-
 const router: Router = Router();
 
 // ~ POST => /api/univers/notifications ~ Create New Notification (Admin only)
 router
   .route("/")
   .get(
-    verifyToken,
-    checkRole(["admin"]),
+
     notificationController.getAllNotifications
   );
 
@@ -22,6 +20,14 @@ router
     verifyToken,
     checkRole(["admin"]),
     notificationController.deleteNotification
+  );
+
+// ~ PUT => /api/univers/notifications/show ~ Show All Notifications (Admin only)
+router
+  .route("/show")
+  .put(
+
+    notificationController.showAllNotifications
   );
 
 export default router;
