@@ -9,7 +9,6 @@ const router: Router = Router();
 router
   .route("/")
   .get(
-
     notificationController.getAllNotifications
   );
 
@@ -26,7 +25,6 @@ router
 router
   .route("/show")
   .put(
-
     notificationController.showAllNotifications
   );
 
