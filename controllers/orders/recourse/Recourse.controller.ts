@@ -26,7 +26,7 @@ class RecourseOrderController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
-      console.log(status)
+      console.log(status);
 
       const recourses = await RecourseOrderService.getRecourse(
         status,
@@ -89,6 +89,17 @@ class RecourseOrderController {
       res.status(200).json({
         message: "تم تحديث الملف المرفق بنجاح",
       });
+    }
+  );
+
+  // ~ Get => /api/captal/recourseUserOrder/item/:id ~ Get Single Recourse Order By Id
+  getRecourseByIdCtrl = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const recourse = await RecourseOrderService.getRecourseById(
+        req.params.id
+      );
+
+      res.status(200).json(recourse);
     }
   );
 }

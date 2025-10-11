@@ -68,6 +68,17 @@ class MaterialOrderController {
       });
     }
   );
+
+  // ~ Get => /api/captal/orderMaterial/:id ~ Get Single Material Order By Id
+  getMaterialByIdCtrl = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const materialOrder = await MaterialOrderService.getMaterialById(
+        req.params.id
+      );
+
+      res.status(200).json(materialOrder);
+    }
+  );
 }
 
 export default new MaterialOrderController();

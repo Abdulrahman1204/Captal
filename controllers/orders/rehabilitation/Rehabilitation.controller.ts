@@ -73,6 +73,17 @@ class RehabilitationController {
       });
     }
   );
+
+  // ~ Get => /api/captal/orderQualification/:id ~ Get Single Qualification By Id
+  getQualificationByIdCtrl = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const qualification = await RehabilitationService.getQualificationById(
+        req.params.id
+      );
+
+      res.status(200).json(qualification);
+    }
+  );
 }
 
 export default new RehabilitationController();

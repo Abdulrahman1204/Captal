@@ -143,6 +143,16 @@ class RehabilitationService {
 
     return qualification;
   }
+
+  // ~ Get => /api/captal/orderQualification/:id ~ Get Single Qualification By Id
+  static async getQualificationById(id: string): Promise<IQualification> {
+    const qualification = await Qualification.findById(id);
+    if (!qualification) {
+      throw new NotFoundError("الطلب غير موجود");
+    }
+
+    return qualification;
+  }
 }
 
 export { RehabilitationService };

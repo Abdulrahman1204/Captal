@@ -152,6 +152,20 @@ class MaterialOrderService {
 
     return material;
   }
+
+  // ~ Get => /api/captal/orderMaterial/:id ~ Get Single Material Order By Id
+  static async getMaterialById(id: string): Promise<IMaterial> {
+    const material = await MaterialOrder.findById(id).populate({
+      path: "materials",
+      model: "Material",
+    });
+
+    if (!material) {
+      throw new NotFoundError("الطلب غير موجود");
+    }
+
+    return material;
+  }
 }
 
 export { MaterialOrderService };

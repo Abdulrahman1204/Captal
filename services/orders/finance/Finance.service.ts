@@ -16,7 +16,8 @@ class FinanceService {
   // ~ Post => /api/captal/orderFinance ~ Create New Order Finance
   static async createFinance(
     financeData: IFinance,
-    file?: ICloudinaryFile
+    file?: ICloudinaryFile,
+    token?: string
   ): Promise<IFinance> {
     const { error } = validaionCreateFinance(financeData);
     if (error) {
@@ -140,6 +141,19 @@ class FinanceService {
       },
       { new: true }
     );
+
+    return finance;
+  }
+
+  // ~ Get > /api/captal/orderFinance/:id ~ Get Single Finance By Id
+  static async getFinanceById(id: string): Promise<IFinance> {
+    // Validate mongoose ObjectId
+    // Importing mongoose here would create an extra dependency; instead validate by checking id length and format using mongoose.Types if needed in other files. But to keep consistent with other services, use User.findById earlier which relies on mongoose; here we'll check via Finance.findById directly and let Mongoose handle invalid ids by returning null.
+
+    const finance = await Finance.findById(id);
+    if (!finance) {
+      throw new NotFoundError("الطلب غير موجود");
+    }
 
     return finance;
   }

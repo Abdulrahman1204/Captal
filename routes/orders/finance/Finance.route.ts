@@ -30,4 +30,9 @@ router
     FinanceController.getFinanceContractorIdCtrl
   );
 
+// ~ Get > /api/captal/orderFinance/:id ~ Get Single Finance By Id
+router
+  .route("/:id")
+  .get(verifyToken, FinanceController.getFinanceByIdCtrl);
+
 export default router;

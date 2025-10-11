@@ -34,4 +34,13 @@ router
     MaterialOrderController.getMaterialContractorIdCtrl
   );
 
+// ~ Get => /api/captal/orderMaterial/:id ~ Get Single Material Order By Id
+router
+  .route("/:id")
+  .get(
+    verifyToken,
+    checkRole(["admin"]),
+    MaterialOrderController.getMaterialByIdCtrl
+  );
+
 export default router;

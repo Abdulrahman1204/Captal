@@ -43,4 +43,13 @@ router
 // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Orders Recourse By Recourse`s Id
 // router.route("/:id").get(RecourseController.getRecourseByRecourseIdCtrl);
 
+// ~ Get single recourse order
+router
+  .route("/item/:id")
+  .get(
+    verifyToken,
+    checkRole(["recourse", "admin"]),
+    RecourseController.getRecourseByIdCtrl
+  );
+
 export default router;

@@ -34,4 +34,13 @@ router
     RehabilitationController.getQualificationsContractorIdCtrl
   );
 
+// ~ Get => /api/captal/orderQualification/:id ~ Get Single Qualification By Id
+router
+  .route("/:id")
+  .get(
+    verifyToken,
+    checkRole(["admin"]),
+    RehabilitationController.getQualificationByIdCtrl
+  );
+
 export default router;

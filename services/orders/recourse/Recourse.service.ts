@@ -213,6 +213,20 @@ class RecourseOrderService {
 
     return updatedRecourse;
   }
+
+  // ~ Get => /api/captal/recourseUserOrder/:id ~ Get Single Recourse Order By Id
+  static async getRecourseById(id: string): Promise<IRecourse> {
+    const recourse = await RecourseOrder.findById(id).populate({
+      path: "materials",
+      model: "Material",
+    });
+
+    if (!recourse) {
+      throw new NotFoundError("الطلب غير موجود");
+    }
+
+    return recourse;
+  }
 }
 
 export { RecourseOrderService };

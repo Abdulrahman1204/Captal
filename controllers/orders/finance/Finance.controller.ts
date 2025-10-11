@@ -7,7 +7,11 @@ class FinanceController {
   // ~ Post => /api/captal/orderFinance ~ Create New Order Finance
   createFinanceCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const token = req.headers.authorization?.split(" ")[1];
+
       await FinanceService.createFinance(req.body, req.file as ICloudinaryFile);
+
+      console.log(token);
 
       res.status(201).json({
         message: "تم إضافة الطلب بنجاح",
@@ -23,7 +27,12 @@ class FinanceController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
-      const Finances = await FinanceService.getFinances(status, search, page, limit);
+      const Finances = await FinanceService.getFinances(
+        status,
+        search,
+        page,
+        limit
+      );
 
       res.status(200).json(Finances);
     }
@@ -50,12 +59,21 @@ class FinanceController {
     }
   );
 
+  // ~ Get > /api/captal/orderFinance/:id ~ Get Single Finance By Id
+  getFinanceByIdCtrl = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const finance = await FinanceService.getFinanceById(req.params.id);
+
+      res.status(200).json(finance);
+    }
+  );
+
   // ~ Put > /api/captal/orderFinance/status/:id ~ Update Status Of Finance Order
   updateStatusFinanceCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       await FinanceService.updateStatusFinance(req.body, req.params.id);
 
-      console.log(req.body)
+      console.log(req.body);
 
       res.status(201).json({
         message: "تم تحديث الطلب بنجاح",
