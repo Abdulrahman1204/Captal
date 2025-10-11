@@ -28,11 +28,7 @@ router
   .route("/show")
   .put(
     verifyToken,
-<<<<<<< HEAD
-    checkRole(["admin"]), 
-=======
     checkRole(["admin"]),
->>>>>>> 68d3b9d23dc368e8bd0cf48c46b0da0cf23f0ad6
     notificationController.showAllNotifications
   );
 
