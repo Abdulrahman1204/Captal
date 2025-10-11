@@ -79,7 +79,7 @@ class MaterialOrderController {
         req.params.id
       );
 
-      res.status(200).json(materialOrder);
+      res.status(200).json([materialOrder]);
     }
   );
 }

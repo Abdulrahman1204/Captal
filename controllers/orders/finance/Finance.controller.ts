@@ -64,7 +64,7 @@ class FinanceController {
     async (req: Request, res: Response): Promise<void> => {
       const finance = await FinanceService.getFinanceById(req.params.id);
 
-      res.status(200).json(finance);
+      res.status(200).json([finance]);
     }
   );
 

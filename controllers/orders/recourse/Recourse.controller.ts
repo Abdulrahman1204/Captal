@@ -99,7 +99,7 @@ class RecourseOrderController {
         req.params.id
       );
 
-      res.status(200).json(recourse);
+      res.status(200).json([recourse]);
     }
   );
 }

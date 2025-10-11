@@ -81,7 +81,7 @@ class RehabilitationController {
         req.params.id
       );
 
-      res.status(200).json(qualification);
+      res.status(200).json([qualification]);
     }
   );
 }
