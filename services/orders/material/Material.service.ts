@@ -11,12 +11,14 @@ import {
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
 import { NotificationService } from "../../notification/Notification.service";
+import jwt from "jsonwebtoken";
 
 class MaterialOrderService {
   // ~ Post => /api/captal/orderMaterial ~ Create New Order Material
   static async createMaterialOrder(
     materialData: IMaterial,
-    file?: ICloudinaryFile
+    file?: ICloudinaryFile,
+    token?: string
   ): Promise<IMaterial> {
     const { error } = validationCreateMaterialOrder(materialData);
     if (error) {
@@ -25,8 +27,26 @@ class MaterialOrderService {
 
     const existingUser = await User.findOne({ phone: materialData.phone });
 
-    const statusUser = existingUser ? "eligible" : "visited";
-    const userId = existingUser ? existingUser._id : null;
+    let statusUser = existingUser ? "eligible" : "visited";
+
+    // Default userId based on phone match
+    let userId = existingUser ? existingUser._id : null;
+
+    // If a token is provided, try to decode it and prefer the user id from token when valid
+    if (token && userId === null) {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET_KEY as string
+      ) as { id?: string };
+
+      if (decoded && decoded.id) {
+        const userByToken = await User.findById(decoded.id);
+        if (userByToken) {
+          userId = userByToken._id;
+          statusUser = "eligible";
+        }
+      }
+    }
 
     const uploadedFile = file
       ? {

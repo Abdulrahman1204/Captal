@@ -7,9 +7,12 @@ class MaterialOrderController {
   // ~ Post => /api/captal/orderMaterial ~ Create New Order Material
   createMaterialOrderCtrl = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const token = req.headers.authorization?.split(" ")[1];
+
       await MaterialOrderService.createMaterialOrder(
         req.body,
-        req.file as ICloudinaryFile
+        req.file as ICloudinaryFile,
+        token
       );
 
       res.status(201).json({

@@ -11,6 +11,7 @@ import {
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
 import { NotificationService } from "../../notification/Notification.service";
+import jwt from "jsonwebtoken";
 
 class FinanceService {
   // ~ Post => /api/captal/orderFinance ~ Create New Order Finance
@@ -25,9 +26,26 @@ class FinanceService {
     }
 
     const existingUser = await User.findOne({ phone: financeData.phone });
+    let statusUser = existingUser ? "eligible" : "visited";
 
-    const statusUser = existingUser ? "eligible" : "visited";
-    const userId = existingUser ? existingUser._id : null;
+    // Default userId based on phone match
+    let userId = existingUser ? existingUser._id : null;
+
+    // If a token is provided, try to decode it and prefer the user id from token when valid
+    if (token && userId === null) {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET_KEY as string
+      ) as { id?: string };
+
+      if (decoded && decoded.id) {
+        const userByToken = await User.findById(decoded.id);
+        if (userByToken) {
+          userId = userByToken._id;
+          statusUser = "eligible";
+        }
+      }
+    }
 
     const uploadedFile = file
       ? {

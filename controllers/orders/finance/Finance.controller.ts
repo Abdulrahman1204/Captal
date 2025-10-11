@@ -9,7 +9,7 @@ class FinanceController {
     async (req: Request, res: Response): Promise<void> => {
       const token = req.headers.authorization?.split(" ")[1];
 
-      await FinanceService.createFinance(req.body, req.file as ICloudinaryFile);
+      await FinanceService.createFinance(req.body, req.file as ICloudinaryFile, token);
 
       console.log(token);
 

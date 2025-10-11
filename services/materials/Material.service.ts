@@ -13,7 +13,8 @@ class MaterialService {
   // ~ POST => /api/captal/material ~ Create New Material
   static async createNewMaterial(
     materialData: IMaterial,
-    file?: ICloudinaryFile
+    file?: ICloudinaryFile,
+    token?: string
   ): Promise<IMaterial> {
     const { error } = validationCreateMaterial(materialData);
     if (error) {
