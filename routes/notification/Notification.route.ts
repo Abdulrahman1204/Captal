@@ -9,7 +9,8 @@ const router: Router = Router();
 router
   .route("/")
   .get(
-
+    verifyToken,
+    checkRole(["admin"]),
     notificationController.getAllNotifications
   );
 
@@ -26,8 +27,10 @@ router
 router
   .route("/show")
   .put(
-
+    verifyToken,
+    checkRole(["admin"]), 
     notificationController.showAllNotifications
   );
 
 export default router;
+
