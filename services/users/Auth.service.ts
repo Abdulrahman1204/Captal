@@ -7,31 +7,41 @@ import {
 import { IOtp, IUser } from "../../models/users/dtos";
 import { OTPUtils } from "../../utils/generateOtp";
 import { generateJWT } from "../../utils/generateToken";
+import { MsegatService } from "../mssgaty.service";
 
 class AuthService {
   // ~ Post => /api/captal/auth/send-otp ~ Send Otp To User
   static async sendOtpUser(userData: IUser): Promise<IUser> {
-    const { error } = validationSendOtp(userData);
-    if (error) {
-      throw new BadRequestError(error.details[0].message);
-    }
-
-    const phone = userData.phone;
-
-    const user = await User.findOne({ phone });
-    if (!user) {
-      throw new NotFoundError("رقم الهاتف غير مسجل لدينا");
-    }
-
-    const otp = OTPUtils.generateOTP();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
-
-    user.otp = otp;
-    user.expiresAt = expiresAt;
-    await user.save();
-
-    return user;
+  const { error } = validationSendOtp(userData);
+  if (error) {
+    throw new BadRequestError(error.details[0].message);
   }
+
+  const phone = userData.phone;
+  const user = await User.findOne({ phone });
+  
+  if (!user) {
+    throw new NotFoundError("رقم الهاتف غير مسجل لدينا");
+  }
+
+  const otp = OTPUtils.generateOTP();
+  const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+  user.otp = otp;
+  user.expiresAt = expiresAt;
+  await user.save();
+
+  // إرسال OTP - الآن يعمل بنجاح!
+  const smsSent = await MsegatService.sendSMS(phone, otp);
+
+  if (smsSent) {
+    console.log('✅ OTP sent successfully to:', phone);
+  } else {
+    console.log('⚠️ OTP saved but SMS not sent to:', phone);
+  }
+
+  return user;
+}
 
   // ~ Post => /api/captal/auth/verify-otp/:id ~ Verfy Otp For User
   static async verifyOtpUser(otpData: IOtp, id: string): Promise<string> {

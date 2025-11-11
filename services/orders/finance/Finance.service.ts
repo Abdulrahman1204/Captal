@@ -10,6 +10,7 @@ import {
 } from "../../../models/orders/finance/Finance.model";
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
+import { MsegatService } from "../../mssgaty.service";
 import { NotificationService } from "../../notification/Notification.service";
 import jwt from "jsonwebtoken";
 
@@ -73,6 +74,8 @@ class FinanceService {
     const text = "تم إنشاء طلب بالأجل جديد";
 
     await NotificationService.createNotification(text);
+
+    await MsegatService.sendOrderConfirmation(financeData.phone);
 
     return newFinance;
   }
@@ -159,6 +162,8 @@ class FinanceService {
       },
       { new: true }
     );
+
+    await MsegatService.sendStatusUpdate(finance.phone);
 
     return finance;
   }

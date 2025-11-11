@@ -10,6 +10,7 @@ import {
 } from "../../../models/orders/rehabilitation/Rehabilitation.Model";
 import { User } from "../../../models/users/User.model";
 import { ICloudinaryFile } from "../../../utils/types";
+import { MsegatService } from "../../mssgaty.service";
 import { NotificationService } from "../../notification/Notification.service";
 
 class RehabilitationService {
@@ -53,6 +54,8 @@ class RehabilitationService {
     const text = "تم إنشاء طلب بالتأهيل جديد";
 
     await NotificationService.createNotification(text);
+
+    await MsegatService.sendOrderConfirmation(qualifiData.phone);
 
     return newQualification;
   }
@@ -140,6 +143,8 @@ class RehabilitationService {
       },
       { new: true }
     );
+
+    await MsegatService.sendStatusUpdate(qualifiData.phone);
 
     return qualification;
   }
