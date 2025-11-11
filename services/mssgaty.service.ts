@@ -1,10 +1,13 @@
 // services/mssgaty.service.ts
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export class MsegatService {
-  private static readonly userName = "Captalsaudi";
-  private static readonly apiKey = "2C83001818C597FC980855DD61E2B87A";
-  private static readonly sender = "CAP TAL";
+  private static readonly userName = process.env.MSEGAT_USERNAME;
+  private static readonly apiKey = process.env.MSEGAT_API_KEY;
+  private static readonly sender = process.env.MSEGAT_SENDER_ID;
   private static readonly endpoint = "https://www.msegat.com/gw/sendsms.php";
 
   private static client = axios.create({
